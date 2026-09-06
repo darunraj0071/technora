@@ -17,24 +17,29 @@
   width: 100%;
   max-width: 480px;
   padding: 36px;
-  border-radius: 16px;
-  background: rgba(11, 17, 32, 0.85);
-  border: 1px solid rgba(56, 189, 248, 0.22);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 242, 254, 0.1);
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%), rgba(11, 17, 32, 0.82);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 
+    0 24px 60px -12px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(0, 242, 254, 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18);
 }
 
 .symposium-logo-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(90deg, rgba(0, 242, 254, 0.1), rgba(129, 140, 248, 0.1));
-  border: 1px solid rgba(0, 242, 254, 0.3);
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.15));
+  border: 1px solid rgba(245, 158, 11, 0.35);
   padding: 6px 14px;
   border-radius: 9999px;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--cyan-bright);
+  color: #fde047;
   letter-spacing: 0.1em;
 }
 
@@ -54,7 +59,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 2px solid var(--cyan-bright);
+  border: 2px solid #f59e0b;
   animation: waiting-pulse 2.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
 }
 
@@ -65,9 +70,9 @@
 .pulse-center-dot {
   width: 24px;
   height: 24px;
-  background: var(--cyan-bright);
+  background: #f59e0b;
   border-radius: 50%;
-  box-shadow: 0 0 20px var(--cyan-bright);
+  box-shadow: 0 0 20px #f59e0b;
   z-index: 2;
 }
 
@@ -79,9 +84,10 @@
 
 /* Quiz Top Navigation Bar */
 .quiz-header-bar {
-  background: rgba(8, 12, 22, 0.9);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+  background: linear-gradient(180deg, rgba(8, 12, 24, 0.85) 0%, rgba(5, 8, 18, 0.9) 100%);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   position: sticky;
   top: 0;
   z-index: 40;
@@ -93,12 +99,14 @@
   font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  padding: 6px 16px;
-  border-radius: 8px;
-  background: rgba(14, 21, 37, 0.9);
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 8px 18px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%), rgba(14, 21, 37, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 242, 254, 0.4);
   color: var(--cyan-bright);
-  box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -107,14 +115,14 @@
 .quiz-timer-display.timer-warning {
   border-color: var(--warning);
   color: #fbbf24;
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   animation: pulse-timer-warn 1s infinite alternate;
 }
 
 .quiz-timer-display.timer-critical {
   border-color: var(--danger);
   color: #f87171;
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   animation: pulse-timer-crit 0.6s infinite alternate;
 }
 
@@ -130,11 +138,13 @@
 
 /* Question Content Container */
 .question-card {
-  background: rgba(11, 18, 33, 0.85);
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.005) 100%), rgba(11, 18, 33, 0.78);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
   padding: 28px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .question-text-area {

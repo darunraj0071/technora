@@ -20,6 +20,7 @@ import {
   showToast 
 } from "./auth.js";
 import { DEFAULT_QUESTIONS } from "./default-questions.js";
+import { initAntiCheat } from "./anti-cheat.js";
 
 // Global Quiz State
 let currentUser = null;
@@ -64,7 +65,7 @@ async function initializeQuizArena() {
     // 1. Fetch Round Settings
     const roundSnap = await getDoc(doc(db, "settings", "round1"));
     if (!roundSnap.exists()) {
-      showToast("Round settings not found. Contact Admin.", "error");
+      showToast("Round settings not found. Contact tournament organizers.", "error");
       setTimeout(() => window.location.href = "participant.html", 2000);
       return;
     }
@@ -238,11 +239,9 @@ function startServerSyncedTimer() {
     // Dynamic warning visual states
     if (timerBox) {
       if (remainingSeconds <= 120) {
-        timerBox.className = "quiz-timer-display timer-critical";
-      } else if (remainingSeconds <= 300) {
-        timerBox.className = "quiz-timer-display timer-warning";
+        timerBox.className = "sand-timer-badge timer-critical";
       } else {
-        timerBox.className = "quiz-timer-display";
+        timerBox.className = "sand-timer-badge";
       }
     }
 
@@ -266,7 +265,7 @@ function setupAdminRoundListener() {
     if (snap.exists()) {
       const data = snap.data();
       if (data.status === "ENDED" && !isSubmitting) {
-        showToast("ROUND ENDED BY ADMIN. Submitting answers...", "error", 4000);
+        showToast("ROUND HAS CONCLUDED. Submitting answers...", "error", 4000);
         submitQuiz(true);
       }
     }
@@ -318,6 +317,11 @@ function setupAntiCheatMonitors() {
       e.returnValue = "Leaving or reloading will not provide extra time. Continue?";
       return e.returnValue;
     }
+  });
+
+  // 4. Disable copy/paste, right click context menu, and dev shortcuts
+  initAntiCheat({
+    onViolation: () => logViolation("Prohibited clipboard action or shortcut attempt")
   });
 }
 

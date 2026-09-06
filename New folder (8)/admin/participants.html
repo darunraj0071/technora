@@ -6,6 +6,7 @@
   <title>TECHNORA'26 — Participant Management & Credential Issuance</title>
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/admin.css">
+  <script src="../js/security.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="tech-grid-bg">
@@ -31,7 +32,15 @@
         </a>
         <a href="questions.html" class="nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-          Questions Bank
+          Round 1 Questions
+        </a>
+        <a href="round2-problems.html" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          Round 2 Problems
+        </a>
+        <a href="round3-problems.html" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon><circle cx="12" cy="12" r="3"></circle></svg>
+          Round 3 Problems
         </a>
         <a href="leaderboard.html" class="nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
@@ -87,10 +96,11 @@
         <table class="tech-table">
           <thead>
             <tr>
-              <th>PARTICIPANT ID</th>
-              <th>NAME</th>
+              <th>TEAM ID</th>
+              <th>TEAM NAME</th>
               <th>STATUS</th>
-              <th>SCORE</th>
+              <th>QUALIFIED</th>
+              <th>R1 SCORE</th>
               <th>VIOLATIONS</th>
               <th>ACCOUNT</th>
               <th>ACTIONS</th>
@@ -98,8 +108,8 @@
           </thead>
           <tbody id="participants-table-tbody">
             <tr>
-              <td colspan="7" style="text-align:center; padding: 36px; color: var(--text-muted);" class="font-mono text-xs">
-                Loading candidate roster...
+              <td colspan="8" style="text-align:center; padding: 36px; color: var(--text-muted);" class="font-mono text-xs">
+                Loading team roster...
               </td>
             </tr>
           </tbody>
@@ -113,24 +123,27 @@
   <div id="credential-generator-modal" class="modal-backdrop hidden">
     <div class="portal-card glass-panel max-w-md w-full">
       <div class="flex justify-between items-center mb-5 pb-3 border-b border-sky-950">
-        <h3 class="font-display text-lg font-bold text-white">Generate Participant Credentials</h3>
+        <h3 class="font-display text-lg font-bold text-white">Generate Team Credentials</h3>
         <button id="btn-close-credential-modal" class="text-slate-400 hover:text-white">✕</button>
       </div>
 
       <form id="form-generate-credential" class="space-y-4">
         <div>
-          <label class="block font-mono text-xs text-sky-300 mb-1">Participant Full Name</label>
+          <label class="block font-mono text-xs text-sky-300 mb-1">Team Name</label>
           <input 
             type="text" 
             id="gen-participant-name" 
             class="tech-input font-mono text-xs" 
-            placeholder="e.g. Rahul Sharma" 
+            placeholder="e.g. CodeTitans, AlphaBytes, CyberKnights" 
             required
           >
+          <p class="font-mono text-[11px] text-slate-500 mt-1">
+            Password will auto-generate as: <strong class="text-emerald-400">technora@&lt;teamname&gt;</strong>
+          </p>
         </div>
 
         <div>
-          <label class="block font-mono text-xs text-sky-300 mb-1">Participant ID</label>
+          <label class="block font-mono text-xs text-sky-300 mb-1">Team ID</label>
           <input 
             type="text" 
             id="gen-participant-id" 
@@ -139,13 +152,13 @@
             required
           >
           <p class="font-mono text-[11px] text-slate-500 mt-1">
-            Standard format: TECH001, TECH002, etc. A secure temporary password will be auto-generated.
+            Standard format: TECH001, TECH002, etc.
           </p>
         </div>
 
         <div class="pt-2 flex gap-3">
           <button type="submit" class="btn-cyber-primary w-full py-2.5 text-xs font-bold">
-            CREATE & GENERATE PASSCODE
+            CREATE TEAM & GENERATE PASSCODE
           </button>
         </div>
       </form>
@@ -159,18 +172,22 @@
         <div class="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto mb-2">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </div>
-        <h3 class="font-display text-xl font-bold text-white">Credentials Generated</h3>
-        <p class="font-mono text-xs text-slate-400">Share these credentials with the participant.</p>
+        <h3 class="font-display text-xl font-bold text-white">Team Credentials Created</h3>
+        <p class="font-mono text-xs text-slate-400">Share these credentials with the team leader.</p>
       </div>
 
       <div class="credential-display-box mb-5 space-y-2 text-sm">
         <div class="flex justify-between items-center">
-          <span class="text-slate-400 font-mono text-xs">Participant ID:</span>
+          <span class="text-slate-400 font-mono text-xs">Team Name:</span>
+          <strong id="res-team-name" class="text-white font-mono font-bold">CodeTitans</strong>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400 font-mono text-xs">Team ID / Login:</span>
           <strong id="res-participant-id" class="text-sky-300 font-mono font-bold">TECH001</strong>
         </div>
         <div class="flex justify-between items-center">
-          <span class="text-slate-400 font-mono text-xs">Temporary Password:</span>
-          <strong id="res-participant-password" class="text-emerald-400 font-mono font-bold tracking-widest text-base">X7K9P2</strong>
+          <span class="text-slate-400 font-mono text-xs">Password:</span>
+          <strong id="res-participant-password" class="text-emerald-400 font-mono font-bold tracking-wider text-base">technora@CodeTitans</strong>
         </div>
       </div>
 

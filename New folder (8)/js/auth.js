@@ -1,7 +1,16 @@
 /**
- * TECHNORA'26 — ROUND 1: DEBUG ARENA
- * Authentication & Role Validation Engine
+ * TECHNORA'26 — Global Right-Click Protection
  */
+window.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  return false;
+}, true);
+document.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  return false;
+}, true);
 
 import { 
   auth, 
@@ -60,7 +69,11 @@ function escapeHtml(text) {
  * e.g., tech001@technora.internal
  */
 export function getParticipantEmail(participantId) {
-  const cleanId = participantId.toLowerCase().trim().replace(/[^a-z0-9_-]/g, "");
+  const trimmed = (participantId || "").trim();
+  if (trimmed.includes("@")) {
+    return trimmed.toLowerCase();
+  }
+  const cleanId = trimmed.toLowerCase().replace(/[^a-z0-9_-]/g, "");
   return `${cleanId}@technora.internal`;
 }
 
@@ -99,7 +112,7 @@ export async function loginParticipant(participantId, password) {
     // Verify status
     if (participantData.isActive === false) {
       await signOut(auth);
-      throw new Error("Your participant account has been deactivated by the Admin.");
+      throw new Error("Your participant account is currently deactivated. Please contact event organizers.");
     }
 
     // Check if participant already attempted
@@ -123,7 +136,7 @@ export async function loginParticipant(participantId, password) {
   } catch (error) {
     let friendlyMessage = "Authentication failed. Please verify your credentials.";
     if (error.code === "auth/invalid-credential" || error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
-      friendlyMessage = "Invalid Participant ID or Password. Check with Admin.";
+      friendlyMessage = "Invalid Team ID or Password. Please re-check your credentials.";
     } else if (error.code === "auth/too-many-requests") {
       friendlyMessage = "Too many failed login attempts. Please wait a moment.";
     } else if (error.message) {
@@ -254,6 +267,20 @@ export function requireAdminAuth(callback) {
       window.location.href = "index.html";
     }
   });
+}
+
+/**
+ * Check if a given UID has admin role
+ */
+export async function checkAdminStatus(uid) {
+  try {
+    const pDoc = await getDoc(doc(db, "participants", uid));
+    const altDoc = await getDoc(doc(db, "admins", uid));
+    return (pDoc.exists() && pDoc.data().role === "admin") || altDoc.exists();
+  } catch (e) {
+    console.error("Check admin error:", e);
+    return false;
+  }
 }
 
 /**

@@ -22,8 +22,8 @@ service cloud.firestore {
 
     // 1. Settings Collection (round status, timers)
     match /settings/{docId} {
-      // Anyone authenticated can read arena settings (waiting/live/ended, start time)
-      allow read: if isAuthenticated();
+      // Public arena / candidates can read round status and timers
+      allow read: if true;
       // Only event administrators can alter round settings
       allow write: if isAdmin();
     }
@@ -62,8 +62,8 @@ service cloud.firestore {
 
     // 5. Results Collection (final scores, times, standings)
     match /results/{uid} {
-      // Public / Participants can read results for the live leaderboard
-      allow read: if isAuthenticated();
+      // Public leaderboard display
+      allow read: if true;
       // Participant can create their result upon test completion
       allow create, update: if isOwner(uid);
       // Admin has full audit and write privileges
@@ -79,6 +79,44 @@ service cloud.firestore {
     match /admins/{uid} {
       allow read: if isAuthenticated();
       allow write: if isAdmin();
+    }
+
+    // 8. Round 2 Coding Problem Bank
+    match /round2Problems/{problemId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // 9. Round 2 Candidate Attempts (code persistence, locked language, problem statuses)
+    match /round2Attempts/{uid} {
+      allow read, create, update: if isOwner(uid) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // 10. Round 2 Results Collection (problem scores, test case evaluations, total /400)
+    match /round2Results/{uid} {
+      allow read: if true;
+      allow create, update: if isOwner(uid) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // 11. Round 3 Final Boss Coding Problem Bank
+    match /round3Problems/{problemId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // 12. Round 3 Candidate Attempts (code persistence, locked language, problem statuses)
+    match /round3Attempts/{uid} {
+      allow read, create, update: if isOwner(uid) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // 13. Round 3 Results Collection (problem scores, test case evaluations, total /500)
+    match /round3Results/{uid} {
+      allow read: if true;
+      allow create, update: if isOwner(uid) || isAdmin();
+      allow delete: if isAdmin();
     }
   }
 }

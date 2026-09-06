@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TECHNORA'26 — Round 2: Code Breaker Arena</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/round2.css">
+  <script src="js/security.js"></script>
+</head>
+<body class="ide-body bg-[#070a12] text-slate-200">
+
+  <!-- =========================================================================
+       1. TOP APP HEADER
+       ========================================================================= -->
+  <header class="ide-header">
+    <div class="ide-brand">
+      <div class="ide-brand-title">
+        <span class="text-sky-400">TECHNORA'26</span>
+        <span class="text-slate-500">/</span>
+        <span class="text-white text-sm font-bold">ROUND 2: CODE BREAKER</span>
+      </div>
+      <span class="ide-badge" id="ide-locked-lang-badge">NO LANG</span>
+    </div>
+
+    <!-- Center Sand Hourglass Timer -->
+    <div class="flex items-center gap-4">
+      <div class="sand-timer-badge">
+        <div class="sand-hourglass-visual">
+          <svg class="sandglass-svg" viewBox="0 0 24 30" fill="none">
+            <path d="M4 2H20M4 28H20M5 3C5 9 10 13 12 15C10 17 5 21 5 27M19 3C19 9 14 13 12 15C14 17 19 21 19 27" stroke="#f59e0b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path class="sand-top-bulb" d="M7 6C7 10 11 13 12 14C13 13 17 10 17 6H7Z" fill="#f59e0b"/>
+            <line class="sand-stream-line" x1="12" y1="14" x2="12" y2="25" stroke="#fbbf24" stroke-width="1.6"/>
+            <path class="sand-bottom-heap" d="M7 26C8 23 11 22 12 22C13 22 16 23 17 26H7Z" fill="#f59e0b"/>
+          </svg>
+        </div>
+        <div class="sand-timer-text-group">
+          <span class="sand-timer-label">⏳ SAND OF TIME</span>
+          <span class="sand-timer-digits" id="ide-timer-digits">40:00</span>
+        </div>
+      </div>
+      <span class="text-xs font-mono text-emerald-400 flex items-center gap-1" id="auto-save-indicator">
+        Saved ●
+      </span>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-3">
+      <button id="btn-finish-round" class="btn-cyber-danger py-1.5 px-3 text-xs font-bold font-mono">
+        FINISH ROUND
+      </button>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       2. PROBLEM NAVIGATION STRIP
+       ========================================================================= -->
+  <div class="ide-nav-strip">
+    <div class="problem-tabs" id="problem-tabs-container">
+      <button class="prob-tab active" data-index="0">
+        <span class="status-dot"></span>
+        <span>P1: Sliding Window</span>
+      </button>
+      <button class="prob-tab" data-index="1">
+        <span class="status-dot"></span>
+        <span>P2: Broken String</span>
+      </button>
+      <button class="prob-tab" data-index="2">
+        <span class="status-dot"></span>
+        <span>P3: Silent Network</span>
+      </button>
+      <button class="prob-tab" data-index="3">
+        <span class="status-dot"></span>
+        <span>P4: The Greedy Lie</span>
+      </button>
+    </div>
+
+    <div class="text-xs font-mono text-slate-400 flex items-center gap-3">
+      <span>Each Problem: <strong class="text-sky-400">100 Pts</strong></span>
+      <span>Total: <strong class="text-emerald-400">400 Pts</strong></span>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       3. WORKSPACE SPLIT (LEFT: PROBLEM STATEMENT | RIGHT: CODE EDITOR)
+       ========================================================================= -->
+  <div class="ide-workspace">
+
+    <!-- LEFT PANE: PROBLEM STATEMENT -->
+    <section class="prob-pane">
+      <div class="prob-pane-header">
+        <div>
+          <h2 class="prob-title" id="prob-title">Problem 1: The Sliding Window Trap</h2>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-xs font-mono text-slate-400" id="prob-category">Arrays • Sliding Window • Hash Map</span>
+            <span class="badge-tech badge-live text-[10px]" id="prob-difficulty">HARD</span>
+          </div>
+        </div>
+        <div class="text-right text-xs font-mono text-slate-400">
+          <div>Time Limit: <span class="text-sky-300 font-bold" id="prob-time-limit">2s</span></div>
+          <div>Memory: <span class="text-sky-300 font-bold" id="prob-memory-limit">128 MB</span></div>
+        </div>
+      </div>
+
+      <div class="prob-pane-body">
+        <div id="prob-description-content" class="space-y-3">
+          <!-- Populated dynamically by round2.js -->
+        </div>
+
+        <h3 class="font-display text-sm font-bold text-sky-400 uppercase mt-6 mb-2">Examples & Explanations</h3>
+        <div id="prob-examples-container" class="space-y-3">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT PANE: CODE EDITOR + TEST CONSOLE -->
+    <section class="editor-pane">
+
+      <!-- Editor Toolbar -->
+      <div class="editor-toolbar">
+        <div class="editor-lang-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          <span id="editor-lang-indicator">SOURCE CODE EDITOR</span>
+        </div>
+
+        <div class="editor-actions">
+          <button id="btn-reset-code" class="btn-cyber-outline py-1 px-2.5 text-xs font-mono text-slate-300">
+            Reset Template
+          </button>
+          <button id="btn-clear-code" class="btn-cyber-outline py-1 px-2.5 text-xs font-mono text-slate-300">
+            Clear
+          </button>
+          <button id="btn-run-code" class="btn-cyber-outline py-1 px-3 text-xs font-mono text-sky-300 flex items-center gap-1.5 font-bold">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            RUN CODE
+          </button>
+          <button id="btn-submit-problem" class="btn-cyber-primary py-1 px-3 text-xs font-mono font-bold flex items-center gap-1.5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            SUBMIT PROBLEM
+          </button>
+        </div>
+      </div>
+
+      <!-- Code Editor Textarea with Line Numbers -->
+      <div class="code-editor-wrapper">
+        <div class="line-numbers" id="ide-line-numbers"></div>
+        <textarea 
+          id="ide-code-textarea" 
+          class="code-textarea" 
+          spellcheck="false" 
+          placeholder="// Type your solution here..."
+        ></textarea>
+      </div>
+
+      <!-- Bottom Drawer: Results & Test Cases -->
+      <div class="results-drawer">
+        <div class="results-drawer-header">
+          <div class="results-tabs">
+            <button class="res-tab-btn active">Public Tests</button>
+            <span class="text-xs font-mono text-slate-400 flex items-center" id="results-summary-banner">
+              Run code to evaluate against public test cases.
+            </span>
+          </div>
+        </div>
+
+        <div class="results-body" id="public-tests-container">
+          <!-- Populated dynamically with test cases -->
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- =========================================================================
+       4. MODALS & POPUPS
+       ========================================================================= -->
+
+  <!-- A. WAITING ROOM MODAL -->
+  <div id="r2-waiting-modal" class="modal-backdrop hidden">
+    <div class="portal-card glass-panel max-w-lg w-full text-center py-10 px-8">
+      <div class="radar-container mb-6">
+        <div class="radar-circle"></div>
+        <div class="radar-sweep"></div>
+      </div>
+
+      <div class="text-xs font-mono text-sky-400 tracking-widest uppercase mb-1">TECHNORA'26</div>
+      <h2 class="font-display text-2xl font-black text-white tracking-wider mb-2">ROUND 2 — CODE BREAKER</h2>
+      <p class="text-xs text-slate-400 font-mono mb-6">"Four Problems. One Compiler. No Second Chances."</p>
+
+      <div class="p-4 bg-slate-900/80 border border-sky-950 rounded-lg mb-6">
+        <div class="text-xs text-slate-500 font-mono">STATUS</div>
+        <div class="font-mono text-sm font-bold text-amber-400 tracking-widest mt-1" id="r2-waiting-msg">
+          WAITING FOR ROUND 2 TO COMMENCE...
+        </div>
+      </div>
+
+      <p class="text-xs text-slate-400 font-mono">
+        Please do not close this window. The arena will automatically launch the moment Round 2 begins.
+      </p>
+    </div>
+  </div>
+
+  <!-- B. ROUND 2 RULES MODAL -->
+  <div id="r2-rules-modal" class="modal-backdrop hidden">
+    <div class="portal-card glass-panel max-w-2xl w-full p-8">
+      <div class="flex items-center gap-3 mb-4 pb-3 border-b border-sky-950">
+        <div class="w-2 h-6 bg-sky-400 rounded-sm"></div>
+        <h2 class="font-display text-xl font-bold text-white tracking-wide">ROUND 2: CODE BREAKER — RULES</h2>
+      </div>
+
+      <div class="space-y-2 text-xs font-mono text-slate-300 max-h-80 overflow-y-auto pr-2 mb-6">
+        <div class="p-2 bg-slate-900/60 rounded flex items-center gap-2">
+          <span class="text-sky-400 font-bold">•</span> 4 Coding Assessment Problems (100 Points each, Total 400 Marks).
+        </div>
+        <div class="p-2 bg-slate-900/60 rounded flex items-center gap-2">
+          <span class="text-sky-400 font-bold">•</span> Total Time: 40 Minutes server-synchronized.
+        </div>
+        <div class="p-2 bg-slate-900/60 rounded flex items-center gap-2">
+          <span class="text-amber-400 font-bold">•</span> You must select ONE programming language. Language is permanently locked once selected.
+        </div>
+        <div class="p-2 bg-slate-900/60 rounded flex items-center gap-2">
+          <span class="text-sky-400 font-bold">•</span> Public test cases evaluate basic correctness. Hidden test cases evaluate boundary cases and optimal complexities.
+        </div>
+        <div class="p-2 bg-slate-900/60 rounded flex items-center gap-2">
+          <span class="text-sky-400 font-bold">•</span> Every problem includes ~30 lines of starter code with realistic subtle bugs for you to identify and resolve.
+        </div>
+        <div class="p-2 bg-slate-900/60 rounded flex items-center gap-2">
+          <span class="text-rose-400 font-bold">•</span> Anti-Cheat Surveillance: Tab switches, window minimization, and fullscreen exit are recorded.
+        </div>
+        <div class="p-2 bg-slate-900/60 rounded flex items-center gap-2">
+          <span class="text-sky-400 font-bold">•</span> When timer reaches 00:00, all active solutions are auto-submitted.
+        </div>
+      </div>
+
+      <button id="btn-r2-rules-accept" class="btn-cyber-primary w-full py-3 text-sm font-bold font-mono">
+        I UNDERSTAND &amp; AGREE
+      </button>
+    </div>
+  </div>
+
+  <!-- C. LANGUAGE SELECTION MODAL -->
+  <div id="r2-lang-modal" class="modal-backdrop hidden">
+    <div class="portal-card glass-panel max-w-xl w-full p-8">
+      <div class="text-center mb-6">
+        <div class="text-xs font-mono text-sky-400 uppercase tracking-widest">STEP 2 OF 2</div>
+        <h2 class="font-display text-xl font-bold text-white mt-1">SELECT YOUR PROGRAMMING LANGUAGE</h2>
+        <p class="text-xs font-mono text-rose-400 mt-2">
+          ⚠️ WARNING: Your choice will be permanently locked for all 4 problems.
+        </p>
+      </div>
+
+      <div class="lang-select-grid">
+        <div class="lang-card" data-lang="python">
+          <div class="font-display text-lg font-bold text-white mb-1">Python 3</div>
+          <div class="text-xs font-mono text-slate-400">CPython 3.10</div>
+        </div>
+
+        <div class="lang-card" data-lang="cpp">
+          <div class="font-display text-lg font-bold text-white mb-1">C++</div>
+          <div class="text-xs font-mono text-slate-400">GCC 10.2 / C++17</div>
+        </div>
+
+        <div class="lang-card" data-lang="c">
+          <div class="font-display text-lg font-bold text-white mb-1">C</div>
+          <div class="text-xs font-mono text-slate-400">GCC 10.2 / C11</div>
+        </div>
+
+        <div class="lang-card" data-lang="java">
+          <div class="font-display text-lg font-bold text-white mb-1">Java</div>
+          <div class="text-xs font-mono text-slate-400">OpenJDK 15</div>
+        </div>
+      </div>
+
+      <button id="btn-lock-language" class="btn-cyber-primary w-full py-3 text-sm font-bold font-mono mt-4" disabled>
+        LOCK LANGUAGE &amp; ENTER CODE BREAKER
+      </button>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Assessment Script Module -->
+  <script type="module" src="js/round2.js"></script>
+  <!-- Living Desert Sand Particles Simulation -->
+  <script src="js/sand-particles.js"></script>
+</body>
+</html>

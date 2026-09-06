@@ -6,6 +6,7 @@
   <title>TECHNORA'26 — Round 1: Debug Arena | Live Quiz</title>
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/participant.css">
+  <script src="js/security.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="tech-grid-bg min-h-screen flex flex-col select-none">
@@ -26,10 +27,20 @@
     </div>
 
     <div class="flex items-center gap-4">
-      <!-- Digital Server Synced Countdown -->
-      <div id="quiz-timer-box" class="quiz-timer-display">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-        <span id="quiz-timer-text">--:--</span>
+      <!-- Sand of Time Server Synced Hourglass Countdown -->
+      <div id="quiz-timer-box" class="sand-timer-badge">
+        <div class="sand-hourglass-visual">
+          <svg class="sandglass-svg" viewBox="0 0 24 30" fill="none">
+            <path d="M4 2H20M4 28H20M5 3C5 9 10 13 12 15C10 17 5 21 5 27M19 3C19 9 14 13 12 15C14 17 19 21 19 27" stroke="#f59e0b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7 6C7 10 11 13 12 14C13 13 17 10 17 6H7Z" fill="#f59e0b"/>
+            <line class="sand-stream-line" x1="12" y1="14" x2="12" y2="25" stroke="#fbbf24" stroke-width="1.6"/>
+            <path d="M7 26C8 23 11 22 12 22C13 22 16 23 17 26H7Z" fill="#f59e0b"/>
+          </svg>
+        </div>
+        <div class="sand-timer-text-group">
+          <span class="sand-timer-label">⏳ SAND OF TIME</span>
+          <span id="quiz-timer-text" class="sand-timer-digits">--:--</span>
+        </div>
       </div>
 
       <!-- Trigger Submit Modal Button -->
@@ -214,7 +225,7 @@
       <div class="glass-panel p-4 mb-5 border-red-900/50 bg-red-950/20 font-mono text-xs text-slate-300 space-y-1.5">
         <div><strong>Reason:</strong> <span id="violation-reason-display" class="text-red-300">Tab switch detected</span></div>
         <div><strong>Total Violations Logged:</strong> <span id="violation-count-display" class="text-red-400 font-bold">1</span></div>
-        <div class="text-[11px] text-slate-400 mt-2">All violation timestamps are permanently logged to the Admin surveillance dashboard.</div>
+        <div class="text-[11px] text-slate-400 mt-2">All violation timestamps are permanently recorded on the official proctoring audit log.</div>
       </div>
 
       <button id="btn-close-violation-modal" class="btn-cyber-primary w-full py-2.5 text-xs font-bold">
@@ -226,5 +237,7 @@
   <div id="toast-container"></div>
 
   <script type="module" src="js/quiz.js"></script>
+  <!-- Living Desert Sand Particles Simulation -->
+  <script src="js/sand-particles.js"></script>
 </body>
 </html>

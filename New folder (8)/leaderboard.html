@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/participant.css">
   <link rel="stylesheet" href="css/admin.css">
+  <script src="js/security.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="tech-grid-bg min-h-screen flex flex-col">
@@ -29,9 +30,6 @@
       <a href="index.html" class="btn-cyber-outline py-1.5 px-3 text-xs flex items-center gap-1.5">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
         Participant Portal
-      </a>
-      <a href="admin/index.html" class="btn-cyber-outline py-1.5 px-3 text-xs text-slate-400">
-        Admin
       </a>
     </div>
   </header>
@@ -61,13 +59,25 @@
           <div id="stat-total-submissions" class="font-mono text-xl font-bold text-sky-400">0</div>
         </div>
         <div class="glass-panel px-4 py-2 text-center border-sky-900/40">
-          <div class="text-[10px] font-mono text-slate-400 uppercase">Top Score</div>
-          <div id="stat-highest-score" class="font-mono text-xl font-bold text-emerald-400">-- / 20</div>
+          <div class="text-[10px] font-mono text-slate-400 uppercase">Top Total Score</div>
+          <div id="stat-highest-score" class="font-mono text-xl font-bold text-emerald-400">-- / 920</div>
         </div>
         <div class="glass-panel px-4 py-2 text-center border-sky-900/40">
-          <div class="text-[10px] font-mono text-slate-400 uppercase">Average</div>
-          <div id="stat-average-score" class="font-mono text-xl font-bold text-amber-400">-- / 20</div>
+          <div class="text-[10px] font-mono text-slate-400 uppercase">Average Total</div>
+          <div id="stat-average-score" class="font-mono text-xl font-bold text-amber-400">-- / 920</div>
         </div>
+      </div>
+    </div>
+
+    <!-- Final Tournament Champions (Top 2 Teams) -->
+    <div id="champions-podium" class="mb-8 hidden">
+      <div class="text-center mb-4">
+        <div class="badge-tech inline-block mb-1 border-yellow-500/50 text-yellow-300 bg-yellow-950/30">🏆 TOURNAMENT WINNERS</div>
+        <h2 class="text-xl font-display font-black text-white tracking-wider">TECHNORA'26 CHAMPIONS PODIUM</h2>
+        <p class="font-mono text-xs text-slate-400">Final Top 2 Winning Teams based on 3-Round Unified Scores</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto" id="podium-cards-container">
+        <!-- Dynamically rendered -->
       </div>
     </div>
 
@@ -78,12 +88,12 @@
           type="text" 
           id="leaderboard-search-input" 
           class="tech-input font-mono text-xs" 
-          placeholder="Filter candidate by Name or Participant ID..."
+          placeholder="Filter team by Team Name or Team ID..."
         >
       </div>
       <div class="font-mono text-xs text-slate-400 flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span>Auto-updates instantaneously on test submit</span>
+        <span>Auto-updates instantaneously on team submission</span>
       </div>
     </div>
 
@@ -92,15 +102,18 @@
       <table class="tech-table">
         <thead>
           <tr>
-            <th style="width: 90px;">RANK</th>
-            <th>PARTICIPANT</th>
-            <th style="width: 150px;">SCORE</th>
-            <th style="width: 140px;">TIME</th>
+            <th style="width: 80px;">RANK</th>
+            <th>TEAM</th>
+            <th style="width: 110px;">ROUND 1</th>
+            <th style="width: 110px;">ROUND 2</th>
+            <th style="width: 110px;">ROUND 3</th>
+            <th style="width: 150px;">TOTAL SCORE</th>
+            <th style="width: 110px;">TIME</th>
           </tr>
         </thead>
         <tbody id="leaderboard-table-tbody">
           <tr>
-            <td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);" class="font-mono text-xs">
+            <td colspan="7" style="text-align:center; padding: 40px; color: var(--text-muted);" class="font-mono text-xs">
               Synchronizing with cloud firestore node...
             </td>
           </tr>
@@ -111,7 +124,7 @@
   </main>
 
   <footer class="p-6 text-center font-mono text-xs text-slate-600 border-t border-sky-950">
-    TECHNORA'26 • Department of Computer Science & Engineering • Round 1 Debug Arena
+    TECHNORA'26 • Department of Computer Science & Engineering • 3-Round Unified Championship
   </footer>
 
   <div id="toast-container"></div>
@@ -123,5 +136,7 @@
       initLeaderboard("leaderboard-table-tbody", "leaderboard-search-input", false);
     });
   </script>
+  <!-- Living Desert Sand Particles Simulation -->
+  <script src="js/sand-particles.js"></script>
 </body>
 </html>

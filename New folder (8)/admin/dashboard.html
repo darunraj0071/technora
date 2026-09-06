@@ -6,6 +6,7 @@
   <title>TECHNORA'26 — Admin Control Center | Live Arena Monitor</title>
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/admin.css">
+  <script src="../js/security.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="tech-grid-bg">
@@ -31,7 +32,15 @@
         </a>
         <a href="questions.html" class="nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-          Questions Bank
+          Round 1 Questions
+        </a>
+        <a href="round2-problems.html" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          Round 2 Problems
+        </a>
+        <a href="round3-problems.html" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon><circle cx="12" cy="12" r="3"></circle></svg>
+          Round 3 Problems
         </a>
         <a href="leaderboard.html" class="nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
@@ -85,17 +94,29 @@
             </div>
           </div>
 
-          <!-- Duration Setting -->
-          <div class="flex items-center gap-3 font-mono text-xs">
-            <label class="text-slate-300">Duration (Minutes):</label>
-            <input 
-              type="number" 
-              id="round-duration-input" 
-              class="tech-input font-mono w-20 py-1 px-2 text-center text-sky-300" 
-              value="20" 
-              min="1" 
-              max="180"
-            >
+          <div class="flex items-center gap-4">
+            <!-- Duration Setting -->
+            <div class="flex items-center gap-3 font-mono text-xs">
+              <label class="text-slate-300">Duration (Minutes):</label>
+              <input 
+                type="number" 
+                id="round-duration-input" 
+                class="tech-input font-mono w-20 py-1 px-2 text-center text-sky-300" 
+                value="20" 
+                min="1" 
+                max="180"
+              >
+            </div>
+
+            <!-- Live Round 1 Server Countdown Timer -->
+            <div class="text-right pl-4 border-l border-sky-950">
+              <div class="font-mono text-xs text-amber-400 flex items-center justify-end gap-1 font-semibold">
+                <span>⏳</span> SAND OF TIME
+              </div>
+              <div id="r1-countdown-timer" class="font-mono text-xl font-black text-amber-300 mt-0.5">
+                20:00
+              </div>
+            </div>
           </div>
         </div>
 
@@ -145,16 +166,164 @@
         </div>
       </div>
 
-      <!-- Live Participant Surveillance Table -->
-      <div class="glass-panel p-6">
+      <!-- ROUND 2 CONTROL CENTER -->
+      <div class="control-banner mb-8 border-indigo-950/60 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950/40">
+        <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="badge-tech badge-live text-xs">ROUND 2 CONTROLLER</span>
+              <span class="text-xs font-mono text-sky-400">4 Problems • 40 Mins Duration</span>
+            </div>
+            <h2 class="font-display text-2xl font-bold text-white tracking-wide">
+              ROUND 2 — CODE BREAKER CONTROL
+            </h2>
+            <p class="font-mono text-xs text-slate-400">
+              When triggered, candidates waiting in the lounge automatically enter the Code Breaker Arena.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="text-right">
+              <div class="font-mono text-xs text-slate-400">ROUND 2 STATUS</div>
+              <div id="r2-round-status-badge" class="badge-tech badge-waiting text-xs mt-1">
+                WAITING
+              </div>
+            </div>
+
+            <div class="text-right pl-4 border-l border-sky-950">
+              <div class="font-mono text-xs text-amber-400 flex items-center justify-end gap-1 font-semibold">
+                <span>⏳</span> SAND OF TIME
+              </div>
+              <div id="r2-countdown-timer" class="font-mono text-xl font-black text-amber-300 mt-0.5">
+                40:00
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-sky-950">
+          <button id="btn-start-round2" class="btn-cyber-primary py-3 px-6 text-xs font-bold font-mono flex items-center gap-2 bg-gradient-to-r from-sky-500 to-indigo-600">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            START ROUND 2
+          </button>
+
+          <button id="btn-end-round2" class="btn-cyber-danger py-3 px-5 text-xs font-bold font-mono" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+            END ROUND 2
+          </button>
+
+          <button id="btn-reset-round2" class="btn-cyber-outline py-3 px-4 text-xs font-mono text-slate-400 hover:text-white">
+            RESET ROUND 2 STATUS
+          </button>
+        </div>
+
+        <!-- Dynamic Team Qualification Filter (Round 2) -->
+        <div class="flex flex-wrap items-center gap-3 mt-4 pt-3 border-t border-sky-950 font-mono text-xs">
+          <span class="text-sky-400 font-bold flex items-center gap-1">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            TEAM QUALIFICATION FILTER:
+          </span>
+          <span class="text-slate-300">Qualify Top</span>
+          <input 
+            type="number" 
+            id="qualify-r2-count" 
+            value="18" 
+            min="1" 
+            max="200" 
+            class="tech-input py-1 px-2.5 w-16 text-center text-white bg-slate-900 font-bold text-xs"
+          >
+          <span class="text-slate-300">Teams for Round 2</span>
+          <button id="btn-qualify-r2" class="btn-cyber-outline py-1.5 px-3 text-emerald-400 border-emerald-500/50 hover:bg-emerald-950/40 text-xs font-bold">
+            ⚡ QUALIFY TOP TEAMS
+          </button>
+          <span id="qualify-r2-status" class="text-slate-400 text-[11px]"></span>
+        </div>
+      </div>
+
+      <!-- ROUND 3 CONTROL CENTER -->
+      <div class="control-banner mb-8 border-indigo-900/60 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950/60">
+        <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="badge-tech badge-live text-xs bg-indigo-900/50 border-indigo-500 text-indigo-300">ROUND 3 CONTROLLER</span>
+              <span class="text-xs font-mono text-indigo-400">2 Problems • 50 Mins Duration • 500 Pts</span>
+            </div>
+            <h2 class="font-display text-2xl font-bold text-white tracking-wide">
+              ROUND 3 — FINAL BOSS CONTROL
+            </h2>
+            <p class="font-mono text-xs text-slate-400">
+              When triggered, candidates waiting in the lounge automatically enter the Final Boss Arena.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="text-right">
+              <div class="font-mono text-xs text-slate-400">ROUND 3 STATUS</div>
+              <div id="r3-round-status-badge" class="badge-tech badge-waiting text-xs mt-1">
+                WAITING
+              </div>
+            </div>
+
+            <div class="text-right pl-4 border-l border-indigo-950">
+              <div class="font-mono text-xs text-purple-400 flex items-center justify-end gap-1 font-semibold">
+                <span>⏳</span> SAND OF TIME
+              </div>
+              <div id="r3-countdown-timer" class="font-mono text-xl font-black text-purple-300 mt-0.5">
+                50:00
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-indigo-950">
+          <button id="btn-start-round3" class="btn-cyber-primary py-3 px-6 text-xs font-bold font-mono flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            START ROUND 3 (FINAL BOSS)
+          </button>
+
+          <button id="btn-end-round3" class="btn-cyber-danger py-3 px-5 text-xs font-bold font-mono" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+            END ROUND 3
+          </button>
+
+          <button id="btn-reset-round3" class="btn-cyber-outline py-3 px-4 text-xs font-mono text-slate-400 hover:text-white">
+            RESET ROUND 3 STATUS
+          </button>
+        </div>
+
+        <!-- Dynamic Finalist Qualification Filter (Round 3) -->
+        <div class="flex flex-wrap items-center gap-3 mt-4 pt-3 border-t border-indigo-950 font-mono text-xs">
+          <span class="text-purple-400 font-bold flex items-center gap-1">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            FINALIST QUALIFICATION FILTER:
+          </span>
+          <span class="text-slate-300">Qualify Top</span>
+          <input 
+            type="number" 
+            id="qualify-r3-count" 
+            value="8" 
+            min="1" 
+            max="100" 
+            class="tech-input py-1 px-2.5 w-16 text-center text-white bg-slate-900 font-bold text-xs"
+          >
+          <span class="text-slate-300">Finalist Teams for Round 3</span>
+          <button id="btn-qualify-r3" class="btn-cyber-outline py-1.5 px-3 text-purple-400 border-purple-500/50 hover:bg-purple-950/40 text-xs font-bold">
+            ⚡ QUALIFY FINALISTS
+          </button>
+          <span id="qualify-r3-status" class="text-slate-400 text-[11px]"></span>
+        </div>
+      </div>
+
+      <!-- Live Participant Surveillance Table (Round 1) -->
+      <div class="glass-panel p-6 mb-8">
         <div class="flex justify-between items-center mb-5">
           <div>
-            <h3 class="font-display text-lg font-bold text-white">Live Candidate Monitoring</h3>
+            <h3 class="font-display text-lg font-bold text-white">Round 1: Debug Arena Candidate Monitoring</h3>
             <p class="font-mono text-xs text-slate-400">Streamed in real-time from active candidate browsers.</p>
           </div>
           <div class="font-mono text-xs text-slate-400 flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            Real-time feed
+            Round 1 Feed
           </div>
         </div>
 
@@ -181,6 +350,80 @@
         </div>
       </div>
 
+      <!-- Round 2 Live Participant Telemetry Table -->
+      <div class="glass-panel p-6 mb-8">
+        <div class="flex justify-between items-center mb-5">
+          <div>
+            <h3 class="font-display text-lg font-bold text-white">Round 2: Code Breaker Live Telemetry</h3>
+            <p class="font-mono text-xs text-slate-400">Real-time candidate coding activity, submissions, and test scores.</p>
+          </div>
+          <div class="font-mono text-xs text-slate-400 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
+            Round 2 Feed
+          </div>
+        </div>
+
+        <div class="tech-table-container">
+          <table class="tech-table">
+            <thead>
+              <tr>
+                <th>PARTICIPANT ID</th>
+                <th>NAME</th>
+                <th>LANGUAGE</th>
+                <th>PROBLEMS SUBMITTED</th>
+                <th>R2 SCORE</th>
+                <th>VIOLATIONS</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="live-round2-tbody">
+              <tr>
+                <td colspan="7" style="text-align:center; padding: 32px; color: var(--text-muted);" class="font-mono text-xs">
+                  Connecting to Round 2 telemetry...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Round 3 Live Participant Telemetry Table -->
+      <div class="glass-panel p-6">
+        <div class="flex justify-between items-center mb-5">
+          <div>
+            <h3 class="font-display text-lg font-bold text-white">Round 3: Final Boss Live Telemetry</h3>
+            <p class="font-mono text-xs text-slate-400">Real-time surveillance of candidate logic, submission status, and test case scoring.</p>
+          </div>
+          <div class="font-mono text-xs text-slate-400 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
+            Round 3 Feed
+          </div>
+        </div>
+
+        <div class="tech-table-container">
+          <table class="tech-table">
+            <thead>
+              <tr>
+                <th>PARTICIPANT ID</th>
+                <th>NAME</th>
+                <th>LANGUAGE</th>
+                <th>PROBLEMS SUBMITTED</th>
+                <th>R3 SCORE</th>
+                <th>VIOLATIONS</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="live-round3-tbody">
+              <tr>
+                <td colspan="7" style="text-align:center; padding: 32px; color: var(--text-muted);" class="font-mono text-xs">
+                  Connecting to Round 3 Final Boss telemetry...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -192,5 +435,7 @@
       initAdminDashboard();
     });
   </script>
+  <!-- Living Desert Sand Particles Simulation -->
+  <script src="../js/sand-particles.js"></script>
 </body>
 </html>

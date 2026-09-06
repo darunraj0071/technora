@@ -6,6 +6,7 @@
   <title>TECHNORA'26 — Leaderboard Audit & Evaluation Log</title>
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/admin.css">
+  <script src="../js/security.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="tech-grid-bg">
@@ -31,7 +32,15 @@
         </a>
         <a href="questions.html" class="nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-          Questions Bank
+          Round 1 Questions
+        </a>
+        <a href="round2-problems.html" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          Round 2 Problems
+        </a>
+        <a href="round3-problems.html" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon><circle cx="12" cy="12" r="3"></circle></svg>
+          Round 3 Problems
         </a>
         <a href="leaderboard.html" class="nav-link active">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
@@ -76,12 +85,24 @@
           <div id="stat-total-submissions" class="stat-number text-sky-300">0</div>
         </div>
         <div class="stat-card stat-success">
-          <div class="font-mono text-xs text-emerald-400 uppercase">Symposium Top Score</div>
-          <div id="stat-highest-score" class="stat-number text-emerald-300">-- / 20</div>
+          <div class="font-mono text-xs text-emerald-400 uppercase">Symposium Top Total</div>
+          <div id="stat-highest-score" class="stat-number text-emerald-300">-- / 920</div>
         </div>
         <div class="stat-card stat-warning">
-          <div class="font-mono text-xs text-amber-400 uppercase">Average Arena Score</div>
-          <div id="stat-average-score" class="stat-number text-amber-300">-- / 20</div>
+          <div class="font-mono text-xs text-amber-400 uppercase">Average Total Score</div>
+          <div id="stat-average-score" class="stat-number text-amber-300">-- / 920</div>
+        </div>
+      </div>
+
+      <!-- Final Tournament Champions (Top 2 Teams) -->
+      <div id="champions-podium" class="mb-8 hidden">
+        <div class="text-center mb-4">
+          <div class="badge-tech inline-block mb-1 border-yellow-500/50 text-yellow-300 bg-yellow-950/30">🏆 TOURNAMENT WINNERS</div>
+          <h2 class="text-xl font-display font-black text-white tracking-wider">OFFICIAL CHAMPIONS PODIUM</h2>
+          <p class="font-mono text-xs text-slate-400">Final Top 2 Winning Teams across all 3 symposium rounds</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto" id="podium-cards-container">
+          <!-- Dynamically rendered -->
         </div>
       </div>
 
@@ -92,7 +113,7 @@
             type="text" 
             id="admin-leaderboard-search" 
             class="tech-input font-mono text-xs" 
-            placeholder="Search candidate by Name or Participant ID..."
+            placeholder="Search team by Team Name or Team ID..."
           >
         </div>
         <div class="font-mono text-xs text-slate-400 flex items-center gap-2">
@@ -107,16 +128,18 @@
           <thead>
             <tr>
               <th style="width: 80px;">RANK</th>
-              <th>PARTICIPANT</th>
-              <th style="width: 140px;">SCORE</th>
-              <th style="width: 130px;">TIME TAKEN</th>
-              <th style="width: 110px;">VIOLATIONS</th>
-              <th style="width: 100px;">AUDIT</th>
+              <th>TEAM</th>
+              <th style="width: 100px;">ROUND 1</th>
+              <th style="width: 100px;">ROUND 2</th>
+              <th style="width: 100px;">ROUND 3</th>
+              <th style="width: 130px;">TOTAL SCORE</th>
+              <th style="width: 110px;">TIME TAKEN</th>
+              <th style="width: 100px;">VIOLATIONS</th>
             </tr>
           </thead>
           <tbody id="admin-leaderboard-tbody">
             <tr>
-              <td colspan="6" style="text-align:center; padding: 36px; color: var(--text-muted);" class="font-mono text-xs">
+              <td colspan="8" style="text-align:center; padding: 36px; color: var(--text-muted);" class="font-mono text-xs">
                 Retrieving official results stream...
               </td>
             </tr>

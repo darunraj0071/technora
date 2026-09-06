@@ -6,6 +6,7 @@
   <title>TECHNORA'26 — Submission Confirmed | Round 1 Results</title>
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/participant.css">
+  <script src="js/security.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="tech-grid-bg min-h-screen flex flex-col">
@@ -49,7 +50,7 @@
       </div>
 
       <div id="participant-identity-banner" class="font-mono text-xs text-slate-300 mb-6 glass-panel p-2.5 bg-slate-950/40">
-        Participant: <strong id="res-participant-name" class="text-white">---</strong> (<span id="res-participant-id" class="text-sky-400">---</span>)
+        Team: <strong id="res-participant-name" class="text-white">---</strong> (<span id="res-participant-id" class="text-sky-400">---</span>)
       </div>
 
       <!-- Performance Metrics Breakdown -->
@@ -84,9 +85,27 @@
         </div>
       </div>
 
+      <!-- ROUND 1 BREAK LOUNGE & ROUND 2 QUALIFICATION STATUS -->
+      <div class="glass-panel p-5 mb-6 border-indigo-900/50 bg-gradient-to-b from-slate-950 to-indigo-950/30 text-center">
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <span id="r2-qual-badge" class="badge-tech badge-waiting text-xs">ROUND 1 BREAK LOUNGE</span>
+        </div>
+        <h3 id="r2-qual-heading" class="font-display text-lg font-bold text-white mb-1">
+          Take a Break!
+        </h3>
+        <p id="r2-qual-subtext" class="font-mono text-xs text-slate-400 mb-4">
+          Convenors are calculating the Round 2 qualification list based on the leaderboard cutoff. Please relax while scores are finalized.
+        </p>
+
+        <a id="btn-proceed-round2" href="round2.html" class="btn-cyber-primary w-full py-3 text-xs font-bold flex items-center justify-center gap-2 bg-slate-800 text-slate-400 cursor-not-allowed pointer-events-none opacity-60">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          <span id="btn-proceed-r2-text">WAITING FOR ROUND 2 QUALIFICATION...</span>
+        </a>
+      </div>
+
       <div class="space-y-3">
-        <a href="leaderboard.html" class="btn-cyber-primary w-full py-3 text-sm font-bold flex items-center justify-center gap-2">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <a href="leaderboard.html" class="btn-cyber-outline w-full py-2.5 text-xs font-bold flex items-center justify-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
           VIEW ARENA LEADERBOARD
         </a>
       </div>
@@ -101,19 +120,23 @@
   <div id="toast-container"></div>
 
   <script type="module">
-    import { db, doc, getDoc, auth, onAuthStateChanged } from "./js/firebase-config.js";
+    import { db, doc, getDoc, onSnapshot, auth, onAuthStateChanged } from "./js/firebase-config.js";
     import { logoutUser } from "./js/auth.js";
 
     document.getElementById("btn-result-logout").addEventListener("click", () => {
       logoutUser("index.html");
     });
 
+    let currentUid = null;
+    let participantData = null;
+    let round2Settings = null;
+
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        // Fallback to cached session storage if logged out
         loadFromSessionStorage();
         return;
       }
+      currentUid = user.uid;
 
       try {
         const resultSnap = await getDoc(doc(db, "results", user.uid));
@@ -122,11 +145,76 @@
         } else {
           loadFromSessionStorage();
         }
+
+        // Listen to participant qualification status
+        onSnapshot(doc(db, "participants", user.uid), (pSnap) => {
+          if (pSnap.exists()) {
+            participantData = pSnap.data();
+            updateQualificationUI();
+          }
+        });
+
+        // Listen to Round 2 settings status
+        onSnapshot(doc(db, "settings", "round2"), (sSnap) => {
+          if (sSnap.exists()) {
+            round2Settings = sSnap.data();
+            updateQualificationUI();
+          }
+        });
+
       } catch (err) {
         console.error("Result fetch error:", err);
         loadFromSessionStorage();
       }
     });
+
+    function updateQualificationUI() {
+      const badge = document.getElementById("r2-qual-badge");
+      const heading = document.getElementById("r2-qual-heading");
+      const subtext = document.getElementById("r2-qual-subtext");
+      const btn = document.getElementById("btn-proceed-round2");
+      const btnText = document.getElementById("btn-proceed-r2-text");
+
+      if (!badge || !heading || !subtext || !btn || !btnText) return;
+
+      const isQualified = participantData?.qualifiedForRound2;
+      const r2Live = (round2Settings?.status === "LIVE");
+
+      if (isQualified === false) {
+        // Disqualified / Cutoff missed
+        badge.className = "badge-tech badge-ended text-xs";
+        badge.textContent = "ROUND 1 COMPLETED";
+        heading.textContent = "Thank You For Participating!";
+        subtext.textContent = "Your team did not make the qualification cutoff for Round 2. Please monitor the Symposium Leaderboard for final event rankings.";
+        btn.classList.add("hidden");
+      } else if (isQualified === true) {
+        // Qualified!
+        badge.className = "badge-tech badge-live text-xs bg-emerald-900/50 border-emerald-500 text-emerald-300";
+        badge.textContent = "QUALIFIED FOR ROUND 2";
+        
+        if (r2Live) {
+          heading.textContent = "🚀 Round 2 is Live!";
+          subtext.textContent = "Round 2: Code Breaker is now LIVE! Enter the arena now!";
+          btn.className = "btn-cyber-primary w-full py-3.5 text-sm font-bold flex items-center justify-center gap-2 bg-gradient-to-r from-sky-500 to-indigo-600 animate-pulse";
+          btn.style.pointerEvents = "auto";
+          btn.style.opacity = "1";
+          btnText.textContent = "ENTER ROUND 2: CODE BREAKER";
+        } else {
+          heading.textContent = "🎉 Congratulations Team!";
+          subtext.textContent = "Your team qualified for Round 2! Enjoy your break. When Round 2 officially commences, your entry button will activate.";
+          btn.className = "btn-cyber-primary w-full py-3 text-xs font-bold flex items-center justify-center gap-2 bg-slate-800 text-slate-400 cursor-not-allowed pointer-events-none opacity-60";
+          btnText.textContent = "WAITING FOR ROUND 2 TO COMMENCE...";
+        }
+      } else {
+        // Pending calculation
+        badge.className = "badge-tech badge-waiting text-xs";
+        badge.textContent = "ROUND 1 BREAK LOUNGE";
+        heading.textContent = "Take a Break!";
+        subtext.textContent = "Convenors are calculating the Round 2 qualification cutoff. Please rest while leaderboard standings are confirmed.";
+        btn.className = "btn-cyber-primary w-full py-3 text-xs font-bold flex items-center justify-center gap-2 bg-slate-800 text-slate-400 cursor-not-allowed pointer-events-none opacity-60";
+        btnText.textContent = "WAITING FOR ROUND 2 QUALIFICATION...";
+      }
+    }
 
     function loadFromSessionStorage() {
       const cached = sessionStorage.getItem("technora_latest_result");
@@ -153,9 +241,11 @@
       if (unansEl) unansEl.textContent = data.unanswered !== undefined ? data.unanswered : "--";
       if (timeEl) timeEl.textContent = data.timeTaken || "--:--";
       if (violationsEl) violationsEl.textContent = data.violationCount || 0;
-      if (nameEl) nameEl.textContent = data.name || "Participant";
+      if (nameEl) nameEl.textContent = data.name || data.teamName || "Team";
       if (idEl) idEl.textContent = data.participantId || "TECH";
     }
   </script>
+  <!-- Living Desert Sand Particles Simulation -->
+  <script src="js/sand-particles.js"></script>
 </body>
 </html>

@@ -6,6 +6,7 @@
   <title>TECHNORA'26 — Waiting Room & Examination Guidelines</title>
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/participant.css">
+  <script src="js/security.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="tech-grid-bg min-h-screen flex flex-col">
@@ -23,8 +24,8 @@
 
     <div class="flex items-center gap-4">
       <div class="text-right">
-        <div id="participant-name-display" class="font-display font-semibold text-sm text-white">Loading...</div>
-        <div id="participant-id-display" class="font-mono text-xs text-sky-400">ID: ---</div>
+        <div id="participant-name-display" class="font-display font-semibold text-sm text-white">Loading Team...</div>
+        <div id="participant-id-display" class="font-mono text-xs text-sky-400">Team ID: ---</div>
       </div>
       <button id="participant-logout-btn" class="btn-cyber-outline py-1.5 px-3 text-xs" title="Sign Out">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -35,49 +36,74 @@
 
   <main class="flex-1 flex items-center justify-center p-6">
 
-    <!-- SECTION 1: PRE-ROUND RULES -->
-    <div id="rules-section" class="portal-card glass-panel max-w-xl w-full">
+    <!-- SECTION 0: GENERAL TOURNAMENT REGULATIONS -->
+    <div id="general-rules-section" class="portal-card glass-panel max-w-xl w-full">
       <div class="text-center mb-6">
-        <div class="badge-tech mb-2">OFFICIAL SYMPOSIUM PROTOCOL</div>
+        <div class="badge-tech mb-2">TECHNORA'26 CHAMPIONSHIP</div>
         <h2 class="font-display text-2xl font-bold text-white tracking-wide">
-          ROUND 1 — DEBUG ARENA RULES
+          GENERAL TOURNAMENT REGULATIONS
         </h2>
-        <p class="text-slate-400 text-xs font-mono mt-1">Read carefully before entering the waiting lobby</p>
+        <p class="text-slate-400 text-xs font-mono mt-1">Applicable to all participating teams across all 3 rounds</p>
       </div>
 
       <div class="glass-panel p-5 mb-6 border-sky-900/40 bg-slate-950/60 font-mono text-xs text-slate-300 space-y-3 leading-relaxed">
         <div class="flex items-start gap-2.5">
-          <span class="text-sky-400 font-bold">•</span>
-          <span><strong>20 Questions:</strong> Industry-standard technical debug questions across Python, C/C++, Java, DBMS, SQL, DSA, and OS.</span>
+          <span class="text-sky-400 font-bold">1.</span>
+          <span><strong>Tournament Structure:</strong> 3-Stage Championship — <em>Round 1: Debug Arena (20 Pts)</em> ➔ <em>Round 2: Code Breaker (400 Pts)</em> ➔ <em>Round 3: Final Boss (500 Pts)</em>. Total: <strong>920 Marks</strong>.</span>
         </div>
         <div class="flex items-start gap-2.5">
-          <span class="text-sky-400 font-bold">•</span>
-          <span><strong>20 Minutes Duration:</strong> Synchronized with the symposium central master server.</span>
+          <span class="text-emerald-400 font-bold">2.</span>
+          <span><strong>Qualification Cutoffs:</strong> Only teams meeting the convenor's leaderboard cutoff after each round will qualify to advance to Round 2 and Round 3.</span>
         </div>
         <div class="flex items-start gap-2.5">
-          <span class="text-sky-400 font-bold">•</span>
-          <span><strong>One attempt only:</strong> Re-entering after submission is strictly restricted.</span>
+          <span class="text-red-400 font-bold">3.</span>
+          <span><strong class="text-red-300">Copy-Paste & Right-Click Strictly Prohibited:</strong> Clipboard copying, pasting, text cutting, context menus, and developer inspection tools are permanently blocked throughout all tests.</span>
         </div>
         <div class="flex items-start gap-2.5">
-          <span class="text-sky-400 font-bold">•</span>
-          <span><strong>Scoring:</strong> Each correct answer carries +1 mark. No negative marking.</span>
+          <span class="text-amber-400 font-bold">4.</span>
+          <span><strong class="text-amber-300">Anti-Cheat Surveillance:</strong> Tab-switching, losing focus from the window, or minimizing will log permanent violations on the official telemetry log.</span>
         </div>
         <div class="flex items-start gap-2.5">
-          <span class="text-sky-400 font-bold">•</span>
-          <span><strong>Randomized Shuffling:</strong> Question sequence and option orders are independently randomized for every candidate.</span>
-        </div>
-        <div class="flex items-start gap-2.5">
-          <span class="text-amber-400 font-bold">•</span>
-          <span><strong class="text-amber-300">Anti-Cheat Surveillance:</strong> Tab-switching, losing window focus, or minimizing the browser will be flagged and logged to the admin monitor.</span>
-        </div>
-        <div class="flex items-start gap-2.5">
-          <span class="text-sky-400 font-bold">•</span>
-          <span><strong>Auto-Submission:</strong> Unsaved or in-progress tests will auto-submit when the countdown reaches 00:00.</span>
+          <span class="text-sky-400 font-bold">5.</span>
+          <span><strong>Server Synchronized Starts:</strong> Every round will commence simultaneously for all teams upon the official symposium broadcast.</span>
         </div>
       </div>
 
-      <button id="btn-rules-understand" class="btn-cyber-primary w-full py-3 text-sm font-bold">
-        I UNDERSTAND & AGREE
+      <button id="btn-general-rules-understand" class="btn-cyber-primary w-full py-3 text-sm font-bold flex items-center justify-center gap-2">
+        ACCEPT REGULATIONS &amp; PROCEED TO ROUND 1
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+
+    <!-- SECTION 1B: ROUND 1 RULES MODAL -->
+    <div id="round1-rules-section" class="portal-card glass-panel max-w-xl w-full text-left hidden">
+      <div class="text-center mb-6">
+        <div class="symposium-logo-badge mb-2">ROUND 1: DEBUG ARENA</div>
+        <h2 class="font-display text-2xl font-bold text-white">Specific Assessment Rules</h2>
+        <p class="text-slate-400 text-xs font-mono mt-1">Review the code debugging guidelines before entering</p>
+      </div>
+
+      <div class="space-y-4 text-xs font-mono text-slate-300 mb-8 bg-black/40 p-4 rounded-xl border border-sky-950/60">
+        <div class="flex items-start gap-2.5">
+          <span class="text-sky-400 font-bold">1.</span>
+          <span>Total duration: <strong>20 Minutes</strong> for technical code analysis.</span>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <span class="text-emerald-400 font-bold">2.</span>
+          <span>Analyze snippets in <strong>C, C++, Java, and Python</strong> to determine precise program outputs.</span>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <span class="text-purple-400 font-bold">3.</span>
+          <span>Questions are locked in chronological order. Confirm your answer before navigating to the next question.</span>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <span class="text-amber-400 font-bold">4.</span>
+          <span>Automatic submission executes immediately when the timer reaches 00:00.</span>
+        </div>
+      </div>
+
+      <button id="btn-round1-rules-start" class="btn-cyber-primary w-full py-3 text-sm font-bold flex items-center justify-center gap-2">
+        CONFIRM &amp; JOIN WAITING ROOM
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </button>
     </div>
@@ -86,15 +112,15 @@
     <div id="waiting-section" class="portal-card glass-panel max-w-lg w-full text-center hidden">
       <div class="mb-4">
         <span id="waiting-status-pill" class="badge-tech badge-waiting text-xs">
-          WAITING FOR ADMIN
+          WAITING TO COMMENCE
         </span>
       </div>
 
       <h2 id="waiting-heading" class="font-display text-2xl font-bold text-white mb-2">
-        WAITING FOR ADMIN TO START...
+        WAITING FOR ROUND TO START...
       </h2>
       <p id="waiting-subtext" class="text-slate-400 text-sm mb-8 font-mono">
-        Please stand by. When the symposium administrators broadcast the start signal, your debug arena will launch automatically.
+        Please stand by. When the official broadcast signal commences, your debug arena will launch automatically.
       </p>
 
       <!-- Pulsing Radar Animation -->
@@ -130,10 +156,16 @@
         <div id="completed-score-val" class="font-mono text-3xl font-bold text-white">-- / 20</div>
       </div>
 
-      <a href="leaderboard.html" class="btn-cyber-primary w-full py-3 text-sm font-bold inline-flex items-center justify-center gap-2">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-        VIEW LIVE LEADERBOARD
-      </a>
+      <div class="space-y-3">
+        <a href="round2.html" class="btn-cyber-primary w-full py-3 text-sm font-bold inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-600 to-blue-700">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          ENTER ROUND 2: CODE BREAKER
+        </a>
+        <a href="leaderboard.html" class="btn-cyber-outline w-full py-2.5 text-xs font-bold inline-flex items-center justify-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          VIEW LIVE LEADERBOARD
+        </a>
+      </div>
     </div>
 
   </main>
@@ -145,5 +177,7 @@
   <div id="toast-container"></div>
 
   <script type="module" src="js/participant.js"></script>
+  <!-- Living Desert Sand Particles Simulation -->
+  <script src="js/sand-particles.js"></script>
 </body>
 </html>

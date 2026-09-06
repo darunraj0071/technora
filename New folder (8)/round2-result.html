@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TECHNORA'26 — Round 2 Scorecard</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/security.js"></script>
+</head>
+<body class="bg-black text-slate-200 min-h-screen flex flex-col justify-between cyber-grid">
+
+  <!-- Top bar -->
+  <header class="h-16 border-b border-sky-950 bg-black/60 backdrop-blur-md px-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-3 h-3 bg-sky-400 rounded-sm animate-pulse"></div>
+      <span class="font-display text-lg font-bold tracking-wider text-white">TECHNORA'26</span>
+      <span class="text-xs font-mono text-slate-500">|</span>
+      <span class="text-xs font-mono text-sky-300">ROUND 2: CODE BREAKER</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <button id="btn-r2-result-logout" class="btn-cyber-outline py-1 px-3 text-xs">
+        LOGOUT
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Scorecard Card -->
+  <main class="flex-1 flex items-center justify-center p-6">
+    <div class="portal-card glass-panel max-w-lg w-full text-center p-8 relative overflow-hidden">
+      
+      <!-- Glow decoration -->
+      <div class="absolute -top-24 -right-24 w-48 h-48 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 text-xs font-mono mb-4">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        ASSESSMENT SUBMISSION RECORDED
+      </div>
+
+      <h1 class="font-display text-2xl font-black tracking-wide text-white mb-1">
+        ROUND 2 COMPLETE
+      </h1>
+      <p class="text-xs font-mono text-slate-400 mb-6" id="r2-candidate-name">
+        Candidate Code Breaker Audit
+      </p>
+
+      <!-- Score Ring Display -->
+      <div class="py-6 px-4 bg-slate-950/80 border border-sky-950 rounded-xl mb-6">
+        <div class="text-[11px] font-mono uppercase tracking-widest text-sky-400 mb-1">
+          TOTAL ROUND 2 SCORE
+        </div>
+        <div class="font-display text-5xl font-black text-white tracking-tight flex items-baseline justify-center gap-2">
+          <span id="r2-score-earned" class="text-sky-400">0</span>
+          <span class="text-slate-500 text-2xl font-bold">/ 400</span>
+        </div>
+      </div>
+
+      <!-- 4 Problem Breakdown -->
+      <div class="space-y-2 mb-6 text-xs font-mono">
+        <div class="flex justify-between p-2.5 bg-slate-900/60 border border-slate-800 rounded">
+          <span class="text-slate-300">P1: The Sliding Window Trap</span>
+          <span class="font-bold text-sky-400" id="r2-p1-score">0 / 100</span>
+        </div>
+        <div class="flex justify-between p-2.5 bg-slate-900/60 border border-slate-800 rounded">
+          <span class="text-slate-300">P2: The Broken String</span>
+          <span class="font-bold text-sky-400" id="r2-p2-score">0 / 100</span>
+        </div>
+        <div class="flex justify-between p-2.5 bg-slate-900/60 border border-slate-800 rounded">
+          <span class="text-slate-300">P3: The Silent Network</span>
+          <span class="font-bold text-sky-400" id="r2-p3-score">0 / 100</span>
+        </div>
+        <div class="flex justify-between p-2.5 bg-slate-900/60 border border-slate-800 rounded">
+          <span class="text-slate-300">P4: The Greedy Lie</span>
+          <span class="font-bold text-sky-400" id="r2-p4-score">0 / 100</span>
+        </div>
+      </div>
+
+      <!-- Meta stats -->
+      <div class="grid grid-cols-2 gap-3 text-xs font-mono mb-6">
+        <div class="p-3 bg-slate-900/50 border border-slate-800 rounded">
+          <div class="text-slate-500">TIME TAKEN</div>
+          <div class="text-base font-bold text-white mt-0.5" id="r2-time-taken">00:00</div>
+        </div>
+        <div class="p-3 bg-slate-900/50 border border-slate-800 rounded">
+          <div class="text-slate-500">VIOLATIONS</div>
+          <div class="text-base font-bold text-white mt-0.5" id="r2-violations">0</div>
+        </div>
+      </div>      <!-- ROUND 2 BREAK LOUNGE & ROUND 3 FINALIST QUALIFICATION STATUS -->
+      <div class="glass-panel p-5 mb-6 border-purple-900/50 bg-gradient-to-b from-slate-950 to-purple-950/30 text-center">
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <span id="r3-qual-badge" class="badge-tech badge-waiting text-xs">ROUND 2 BREAK LOUNGE</span>
+        </div>
+        <h3 id="r3-qual-heading" class="font-display text-lg font-bold text-white mb-1">
+          Take a Break!
+        </h3>
+        <p id="r3-qual-subtext" class="font-mono text-xs text-slate-400 mb-4">
+          Convenors are reviewing cumulative scores across Round 1 and Round 2 to determine the Finalists for Round 3: Final Boss.
+        </p>
+
+        <a id="btn-proceed-round3" href="round3.html" class="btn-cyber-primary w-full py-3 text-xs font-bold font-mono flex items-center justify-center gap-2 bg-slate-800 text-slate-400 cursor-not-allowed pointer-events-none opacity-60">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          <span id="btn-proceed-r3-text">WAITING FOR FINALIST QUALIFICATION...</span>
+        </a>
+      </div>
+
+      <!-- Actions -->
+      <div class="space-y-3">
+        <a href="leaderboard.html" class="btn-cyber-outline w-full py-2.5 text-xs font-bold font-mono flex items-center justify-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          VIEW UNIFIED LEADERBOARD
+        </a>
+      </div>
+
+      <p class="text-[11px] font-mono text-slate-500 mt-5">
+        Hidden test cases and optimal model solutions will be disclosed following the official symposium prize distribution.
+      </p>
+
+    </div>
+  </main>
+
+  <div id="toast-container"></div>
+
+  <script type="module">
+    import { db, doc, getDoc, onSnapshot, auth, onAuthStateChanged } from "./js/firebase-config.js";
+    import { logoutUser } from "./js/auth.js";
+
+    document.getElementById("btn-r2-result-logout").addEventListener("click", () => {
+      logoutUser("index.html");
+    });
+
+    let currentUid = null;
+    let participantData = null;
+    let round3Settings = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        loadCachedResult();
+        return;
+      }
+      currentUid = user.uid;
+
+      try {
+        const snap = await getDoc(doc(db, "round2Results", user.uid));
+        if (snap.exists()) {
+          renderResult(snap.data());
+        } else {
+          loadCachedResult();
+        }
+
+        // Listen to participant qualification for Round 3
+        onSnapshot(doc(db, "participants", user.uid), (pSnap) => {
+          if (pSnap.exists()) {
+            participantData = pSnap.data();
+            updateQualificationUI();
+          }
+        });
+
+        // Listen to Round 3 settings status
+        onSnapshot(doc(db, "settings", "round3"), (sSnap) => {
+          if (sSnap.exists()) {
+            round3Settings = sSnap.data();
+            updateQualificationUI();
+          }
+        });
+
+      } catch (err) {
+        console.error("Result fetch error:", err);
+        loadCachedResult();
+      }
+    });
+
+    function updateQualificationUI() {
+      const badge = document.getElementById("r3-qual-badge");
+      const heading = document.getElementById("r3-qual-heading");
+      const subtext = document.getElementById("r3-qual-subtext");
+      const btn = document.getElementById("btn-proceed-round3");
+      const btnText = document.getElementById("btn-proceed-r3-text");
+
+      if (!badge || !heading || !subtext || !btn || !btnText) return;
+
+      const isQualified = participantData?.qualifiedForRound3;
+      const r3Live = (round3Settings?.status === "LIVE");
+
+      if (isQualified === false) {
+        // Disqualified / Cutoff missed
+        badge.className = "badge-tech badge-ended text-xs";
+        badge.textContent = "ROUND 2 COMPLETED";
+        heading.textContent = "Thank You For Competing!";
+        subtext.textContent = "Your team did not make the finalist cutoff for Round 3: Final Boss. Please follow the live championship standings on the leaderboard.";
+        btn.classList.add("hidden");
+      } else if (isQualified === true) {
+        // Finalist Qualified!
+        badge.className = "badge-tech badge-live text-xs bg-purple-900/50 border-purple-500 text-purple-300";
+        badge.textContent = "QUALIFIED FOR FINAL BOSS";
+        
+        if (r3Live) {
+          heading.textContent = "⚔️ Final Boss is Live!";
+          subtext.textContent = "Round 3: Final Boss is now LIVE! Prove your logic now!";
+          btn.className = "btn-cyber-primary w-full py-3.5 text-sm font-bold font-mono flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 animate-pulse";
+          btn.style.pointerEvents = "auto";
+          btn.style.opacity = "1";
+          btnText.textContent = "ENTER ROUND 3: FINAL BOSS";
+        } else {
+          heading.textContent = "🏆 Congratulations Finalists!";
+          subtext.textContent = "Your team is a Round 3 FINALIST! Enjoy your rest. When Round 3 commences, your Final Boss entry button will activate.";
+          btn.className = "btn-cyber-primary w-full py-3 text-xs font-bold font-mono flex items-center justify-center gap-2 bg-slate-800 text-slate-400 cursor-not-allowed pointer-events-none opacity-60";
+          btnText.textContent = "WAITING FOR ROUND 3 TO COMMENCE...";
+        }
+      } else {
+        // Pending cutoff calculation
+        badge.className = "badge-tech badge-waiting text-xs";
+        badge.textContent = "ROUND 2 BREAK LOUNGE";
+        heading.textContent = "Take a Break!";
+        subtext.textContent = "Convenors are reviewing cumulative scores across Round 1 and Round 2 to determine the Finalists for Round 3: Final Boss.";
+        btn.className = "btn-cyber-primary w-full py-3 text-xs font-bold font-mono flex items-center justify-center gap-2 bg-slate-800 text-slate-400 cursor-not-allowed pointer-events-none opacity-60";
+        btnText.textContent = "WAITING FOR FINALIST QUALIFICATION...";
+      }
+    }
+
+    function loadCachedResult() {
+      const cached = sessionStorage.getItem("technora_r2_result");
+      if (cached) renderResult(JSON.parse(cached));
+    }
+
+    function renderResult(data) {
+      if (!data) return;
+      document.getElementById("r2-candidate-name").textContent = `Team: ${data.name || data.teamName || 'Team'} (${data.participantId || ''}) • ${data.language ? data.language.toUpperCase() : ''}`;
+      document.getElementById("r2-score-earned").textContent = data.totalScore !== undefined ? data.totalScore : 0;
+      document.getElementById("r2-p1-score").textContent = `${data.p1Score || 0} / 100`;
+      document.getElementById("r2-p2-score").textContent = `${data.p2Score || 0} / 100`;
+      document.getElementById("r2-p3-score").textContent = `${data.p3Score || 0} / 100`;
+      document.getElementById("r2-p4-score").textContent = `${data.p4Score || 0} / 100`;
+      
+      const m = Math.floor((data.timeTaken || 0) / 60);
+      const s = (data.timeTaken || 0) % 60;
+      document.getElementById("r2-time-taken").textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      document.getElementById("r2-violations").textContent = data.violationCount || 0;
+    }
+  </script>
+  <!-- Living Desert Sand Particles Simulation -->
+  <script src="js/sand-particles.js"></script>
+</body>
+</html>

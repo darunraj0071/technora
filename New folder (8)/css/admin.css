@@ -10,8 +10,10 @@
 .admin-sidebar {
   width: 260px;
   min-width: 260px;
-  background: rgba(8, 12, 22, 0.95);
-  border-right: 1px solid rgba(56, 189, 248, 0.16);
+  background: linear-gradient(180deg, rgba(16, 11, 7, 0.92) 0%, rgba(10, 7, 4, 0.96) 100%);
+  backdrop-filter: blur(24px) saturate(170%);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  border-right: 1px solid rgba(245, 158, 11, 0.2);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -20,6 +22,7 @@
   left: 0;
   z-index: 40;
   transition: transform 0.3s ease;
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.6);
 }
 
 .admin-main {
@@ -50,42 +53,46 @@
   gap: 12px;
   padding: 12px 18px;
   margin: 4px 12px;
-  border-radius: 8px;
+  border-radius: 9px;
   font-family: var(--font-mono);
   font-size: 0.88rem;
-  color: var(--text-secondary);
+  color: #d4a373;
   text-decoration: none;
   transition: all 0.18s ease;
   border: 1px solid transparent;
 }
 
 .nav-link:hover {
-  background: rgba(14, 165, 233, 0.08);
-  color: var(--cyan-bright);
-  border-color: rgba(56, 189, 248, 0.18);
+  background: rgba(245, 158, 11, 0.1);
+  color: #fde047;
+  border-color: rgba(245, 158, 11, 0.25);
 }
 
 .nav-link.active {
-  background: rgba(14, 165, 233, 0.14);
-  color: var(--cyan-bright);
-  border-color: rgba(0, 242, 254, 0.35);
-  box-shadow: 0 0 15px -3px rgba(0, 242, 254, 0.2);
+  background: rgba(245, 158, 11, 0.16);
+  color: #fef08a;
+  border-color: rgba(245, 158, 11, 0.45);
+  box-shadow: 0 0 16px -3px rgba(245, 158, 11, 0.35);
   font-weight: 600;
 }
 
-/* Stat Cards */
+/* Glassmorphic Sand Stat Cards */
 .stat-card {
-  background: rgba(11, 18, 33, 0.85);
-  border: 1px solid rgba(56, 189, 248, 0.16);
-  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(245, 158, 11, 0.02) 100%), rgba(20, 13, 8, 0.82);
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  border-radius: 14px;
   padding: 22px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(254, 240, 138, 0.18);
   transition: all 0.25s ease;
 }
 
 .stat-card:hover {
-  border-color: rgba(56, 189, 248, 0.35);
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.25);
   transform: translateY(-2px);
 }
 
@@ -96,7 +103,7 @@
   left: 0;
   width: 4px;
   height: 100%;
-  background: var(--cyan-bright);
+  background: #f59e0b;
 }
 
 .stat-card.stat-success::before {
@@ -108,7 +115,7 @@
 }
 
 .stat-card.stat-purple::before {
-  background: #8b5cf6;
+  background: #d97706;
 }
 
 .stat-number {
@@ -117,14 +124,18 @@
   font-weight: 700;
   line-height: 1;
   margin-top: 8px;
+  color: #fef08a;
 }
 
-/* Data Table */
+/* Glassmorphic Sand Data Table */
 .tech-table-container {
   overflow-x: auto;
-  border-radius: 12px;
-  border: 1px solid rgba(56, 189, 248, 0.18);
-  background: rgba(10, 15, 28, 0.85);
+  border-radius: 14px;
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(245, 158, 11, 0.01) 100%), rgba(16, 11, 7, 0.82);
+  backdrop-filter: blur(24px) saturate(170%);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(254, 240, 138, 0.12);
 }
 
 .tech-table {
@@ -135,35 +146,38 @@
 }
 
 .tech-table th {
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(24, 16, 10, 0.9);
+  backdrop-filter: blur(12px);
   padding: 14px 18px;
   font-family: var(--font-mono);
   font-size: 0.76rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-cyan);
-  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  color: #fde047;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
 }
 
 .tech-table td {
   padding: 14px 18px;
-  border-bottom: 1px solid rgba(56, 189, 248, 0.08);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.08);
   color: var(--text-primary);
   font-family: var(--font-mono);
 }
 
 .tech-table tr:hover td {
-  background: rgba(14, 165, 233, 0.04);
+  background: rgba(245, 158, 11, 0.08);
 }
 
-/* Round Control Panel */
+/* Glassmorphic Sand Control Banner */
 .control-banner {
-  background: linear-gradient(135deg, rgba(14, 23, 42, 0.9), rgba(15, 23, 42, 0.7));
-  border: 1px solid rgba(0, 242, 254, 0.25);
-  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(26, 17, 11, 0.85), rgba(16, 10, 6, 0.9));
+  backdrop-filter: blur(24px) saturate(170%);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  border-radius: 16px;
   padding: 24px 28px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(254, 240, 138, 0.2);
 }
 
 /* Code Snippet Display in Credential Generator */
