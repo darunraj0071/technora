@@ -1,0 +1,176 @@
+/* TECHNORA'26 — ROUND 1: DEBUG ARENA
+   ADMIN PANEL STYLES
+*/
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: rgba(8, 12, 22, 0.95);
+  border-right: 1px solid rgba(56, 189, 248, 0.16);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 40;
+  transition: transform 0.3s ease;
+}
+
+.admin-main {
+  flex: 1;
+  margin-left: 260px;
+  padding: 32px 40px;
+  min-height: 100vh;
+  position: relative;
+  z-index: 10;
+}
+
+@media (max-width: 1024px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+  }
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+  .admin-main {
+    margin-left: 0;
+    padding: 24px 16px;
+  }
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  margin: 4px 12px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.18s ease;
+  border: 1px solid transparent;
+}
+
+.nav-link:hover {
+  background: rgba(14, 165, 233, 0.08);
+  color: var(--cyan-bright);
+  border-color: rgba(56, 189, 248, 0.18);
+}
+
+.nav-link.active {
+  background: rgba(14, 165, 233, 0.14);
+  color: var(--cyan-bright);
+  border-color: rgba(0, 242, 254, 0.35);
+  box-shadow: 0 0 15px -3px rgba(0, 242, 254, 0.2);
+  font-weight: 600;
+}
+
+/* Stat Cards */
+.stat-card {
+  background: rgba(11, 18, 33, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.16);
+  border-radius: 12px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.stat-card:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+  transform: translateY(-2px);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--cyan-bright);
+}
+
+.stat-card.stat-success::before {
+  background: #10b981;
+}
+
+.stat-card.stat-warning::before {
+  background: #f59e0b;
+}
+
+.stat-card.stat-purple::before {
+  background: #8b5cf6;
+}
+
+.stat-number {
+  font-family: var(--font-mono);
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 8px;
+}
+
+/* Data Table */
+.tech-table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  background: rgba(10, 15, 28, 0.85);
+}
+
+.tech-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.tech-table th {
+  background: rgba(15, 23, 42, 0.95);
+  padding: 14px 18px;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-cyan);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.tech-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.08);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.tech-table tr:hover td {
+  background: rgba(14, 165, 233, 0.04);
+}
+
+/* Round Control Panel */
+.control-banner {
+  background: linear-gradient(135deg, rgba(14, 23, 42, 0.9), rgba(15, 23, 42, 0.7));
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  border-radius: 14px;
+  padding: 24px 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Code Snippet Display in Credential Generator */
+.credential-display-box {
+  background: #030712;
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+  font-family: var(--font-mono);
+}

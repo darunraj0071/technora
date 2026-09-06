@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TECHNORA'26 — Round 1 Debug Arena | Live Leaderboard</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/participant.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="tech-grid-bg min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="quiz-header-bar flex flex-wrap justify-between items-center px-6 py-4">
+    <div class="flex items-center gap-3">
+      <div class="symposium-logo-badge">
+        TECHNORA'26
+      </div>
+      <div>
+        <h1 class="font-display font-bold text-white text-base leading-none">
+          ROUND 1: DEBUG ARENA
+        </h1>
+        <span class="font-mono text-[11px] text-sky-400">OFFICIAL SYMPOSIUM STANDINGS</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="btn-cyber-outline py-1.5 px-3 text-xs flex items-center gap-1.5">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+        Participant Portal
+      </a>
+      <a href="admin/index.html" class="btn-cyber-outline py-1.5 px-3 text-xs text-slate-400">
+        Admin
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-8">
+
+    <!-- Title & Status Banner -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+      <div>
+        <div class="badge-tech badge-live mb-2 inline-flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
+          REAL-TIME SYNCHRONIZED
+        </div>
+        <h2 class="font-display text-3xl font-bold text-white tracking-tight">
+          Symposium Arena Standings
+        </h2>
+        <p class="font-mono text-xs text-slate-400 mt-1">
+          Rankings are sorted by highest score with lowest completion time as tie-breaker.
+        </p>
+      </div>
+
+      <!-- Live Arena Statistics -->
+      <div class="flex gap-4">
+        <div class="glass-panel px-4 py-2 text-center border-sky-900/40">
+          <div class="text-[10px] font-mono text-slate-400 uppercase">Submissions</div>
+          <div id="stat-total-submissions" class="font-mono text-xl font-bold text-sky-400">0</div>
+        </div>
+        <div class="glass-panel px-4 py-2 text-center border-sky-900/40">
+          <div class="text-[10px] font-mono text-slate-400 uppercase">Top Score</div>
+          <div id="stat-highest-score" class="font-mono text-xl font-bold text-emerald-400">-- / 20</div>
+        </div>
+        <div class="glass-panel px-4 py-2 text-center border-sky-900/40">
+          <div class="text-[10px] font-mono text-slate-400 uppercase">Average</div>
+          <div id="stat-average-score" class="font-mono text-xl font-bold text-amber-400">-- / 20</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter & Search Bar -->
+    <div class="glass-panel p-4 mb-6 flex flex-wrap gap-4 items-center justify-between">
+      <div class="relative flex-1 min-w-[240px]">
+        <input 
+          type="text" 
+          id="leaderboard-search-input" 
+          class="tech-input font-mono text-xs" 
+          placeholder="Filter candidate by Name or Participant ID..."
+        >
+      </div>
+      <div class="font-mono text-xs text-slate-400 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>Auto-updates instantaneously on test submit</span>
+      </div>
+    </div>
+
+    <!-- Leaderboard Table -->
+    <div class="tech-table-container">
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th style="width: 90px;">RANK</th>
+            <th>PARTICIPANT</th>
+            <th style="width: 150px;">SCORE</th>
+            <th style="width: 140px;">TIME</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-table-tbody">
+          <tr>
+            <td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);" class="font-mono text-xs">
+              Synchronizing with cloud firestore node...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <footer class="p-6 text-center font-mono text-xs text-slate-600 border-t border-sky-950">
+    TECHNORA'26 • Department of Computer Science & Engineering • Round 1 Debug Arena
+  </footer>
+
+  <div id="toast-container"></div>
+
+  <script type="module">
+    import { initLeaderboard } from "./js/leaderboard.js";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initLeaderboard("leaderboard-table-tbody", "leaderboard-search-input", false);
+    });
+  </script>
+</body>
+</html>

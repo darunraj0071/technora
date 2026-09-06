@@ -1,0 +1,357 @@
+/* TECHNORA'26 — ROUND 1: DEBUG ARENA
+   DESIGN SYSTEM & CORE STYLES
+   Dark technical symposium aesthetic
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-primary: #05070c;
+  --bg-secondary: #0a0e17;
+  --bg-card: rgba(14, 21, 37, 0.75);
+  --bg-card-hover: rgba(20, 31, 54, 0.85);
+  --bg-elevated: #111a2e;
+  
+  --border-subtle: rgba(56, 189, 248, 0.12);
+  --border-glow: rgba(0, 242, 254, 0.35);
+  --border-active: #00f2fe;
+
+  --cyan-bright: #00f2fe;
+  --cyan-dim: #0ea5e9;
+  --blue-electric: #38bdf8;
+  --blue-deep: #1d4ed8;
+  --violet-accent: #818cf8;
+  --violet-glow: rgba(129, 140, 248, 0.25);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-cyan: #38bdf8;
+  
+  --danger: #ef4444;
+  --danger-glow: rgba(239, 68, 68, 0.25);
+  --warning: #f59e0b;
+  --warning-glow: rgba(245, 158, 11, 0.25);
+  --success: #10b981;
+  --success-glow: rgba(16, 185, 129, 0.25);
+
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-sans: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Technical Grid Overlay */
+.tech-grid-bg {
+  background-color: var(--bg-primary);
+  background-image: 
+    linear-gradient(rgba(14, 23, 42, 0.55) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 23, 42, 0.55) 1px, transparent 1px);
+  background-size: 36px 36px;
+  background-position: center center;
+  position: relative;
+}
+
+.tech-grid-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 480px;
+  background: radial-gradient(circle at 50% -20%, rgba(0, 242, 254, 0.12), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glassmorphic Panel */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: all 0.25s ease;
+}
+
+.glass-panel:hover {
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+.glow-panel {
+  box-shadow: 0 0 24px -4px rgba(0, 242, 254, 0.15), inset 0 0 12px -2px rgba(0, 242, 254, 0.05);
+  border-color: var(--border-glow);
+}
+
+/* Typography styles */
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.glow-text-cyan {
+  text-shadow: 0 0 16px rgba(0, 242, 254, 0.6);
+  color: var(--cyan-bright);
+}
+
+.glow-text-violet {
+  text-shadow: 0 0 16px rgba(129, 140, 248, 0.6);
+  color: var(--violet-accent);
+}
+
+/* Header & Badges */
+.badge-tech {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--cyan-bright);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.badge-live {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  animation: pulse-border 2s infinite ease-in-out;
+}
+
+.badge-waiting {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.badge-ended {
+  background: rgba(100, 116, 139, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+/* Custom Buttons */
+.btn-cyber-primary {
+  background: linear-gradient(135deg, #00f2fe 0%, #0284c7 100%);
+  color: #030712;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 16px -2px rgba(0, 242, 254, 0.4);
+}
+
+.btn-cyber-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 24px 0 rgba(0, 242, 254, 0.65);
+  background: linear-gradient(135deg, #38bdf8 0%, #0369a1 100%);
+}
+
+.btn-cyber-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-cyber-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-cyber-outline {
+  background: rgba(14, 21, 37, 0.6);
+  color: var(--cyan-bright);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.88rem;
+  letter-spacing: 0.05em;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-cyber-outline:hover:not(:disabled) {
+  border-color: var(--cyan-bright);
+  background: rgba(56, 189, 248, 0.1);
+  box-shadow: 0 0 16px -2px rgba(0, 242, 254, 0.25);
+}
+
+.btn-cyber-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cyber-danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 16px -2px rgba(239, 68, 68, 0.4);
+}
+
+/* Form inputs */
+.tech-input {
+  width: 100%;
+  background: rgba(10, 14, 23, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 8px;
+  padding: 11px 16px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.tech-input:focus {
+  border-color: var(--cyan-bright);
+  box-shadow: 0 0 16px -2px rgba(0, 242, 254, 0.3);
+  background: rgba(15, 23, 42, 0.95);
+}
+
+.tech-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Keyframes */
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(239, 68, 68, 0.35); }
+  50% { border-color: rgba(239, 68, 68, 0.85); box-shadow: 0 0 12px rgba(239, 68, 68, 0.4); }
+}
+
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 12px rgba(0, 242, 254, 0.2); }
+  50% { box-shadow: 0 0 24px rgba(0, 242, 254, 0.6); }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.25);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.5);
+}
+
+/* Toast Notifications */
+#toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  min-width: 280px;
+  max-width: 420px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  border-radius: 8px;
+  padding: 12px 16px;
+  border-left: 4px solid var(--cyan-bright);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  transform: translateX(120%);
+  animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast.toast-error {
+  border-left-color: var(--danger);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(239, 68, 68, 0.2);
+}
+
+.toast.toast-success {
+  border-left-color: var(--success);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+.toast.toast-warning {
+  border-left-color: var(--warning);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(245, 158, 11, 0.2);
+}
+
+@keyframes toast-in {
+  to { transform: translateX(0); }
+}
+
+@keyframes toast-out {
+  to { transform: translateX(120%); opacity: 0; }
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.8);
+  backdrop-filter: blur(6px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-backdrop.hidden {
+  display: none;
+}

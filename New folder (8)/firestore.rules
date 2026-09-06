@@ -1,0 +1,84 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.admin == true ||
+        (exists(/databases/$(database)/documents/participants/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/participants/$(request.auth.uid)).data.role == "admin") ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // 1. Settings Collection (round status, timers)
+    match /settings/{docId} {
+      // Anyone authenticated can read arena settings (waiting/live/ended, start time)
+      allow read: if isAuthenticated();
+      // Only event administrators can alter round settings
+      allow write: if isAdmin();
+    }
+
+    // 2. Participants Collection
+    match /participants/{uid} {
+      // Participant can read their own doc; Admin can read all
+      allow read: if isOwner(uid) || isAdmin();
+      
+      // Participant can update their own in-progress progress status, violations, and submission flag
+      allow update: if isOwner(uid) && (
+        // Prevent changing own role or deactivating account
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'email'])
+      );
+
+      // Admin has full control to create, update, and reset participants
+      allow create, delete: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // 3. Question Bank Collection
+    match /questions/{questionId} {
+      // Authenticated participants and admins can read question items
+      allow read: if isAuthenticated();
+      // Only admins can add, update, or delete questions
+      allow write: if isAdmin();
+    }
+
+    // 4. Attempts Collection (in-progress test state, option mappings, navigator flags)
+    match /attempts/{uid} {
+      // Candidate can create and update their own attempt
+      allow read, create, update: if isOwner(uid);
+      // Admin can inspect and reset any attempt
+      allow read, write: if isAdmin();
+    }
+
+    // 5. Results Collection (final scores, times, standings)
+    match /results/{uid} {
+      // Public / Participants can read results for the live leaderboard
+      allow read: if isAuthenticated();
+      // Participant can create their result upon test completion
+      allow create, update: if isOwner(uid);
+      // Admin has full audit and write privileges
+      allow write: if isAdmin();
+    }
+
+    // 6. Admin Logs Collection
+    match /adminLogs/{logId} {
+      allow read, write: if isAdmin();
+    }
+
+    // 7. Admins metadata collection
+    match /admins/{uid} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+  }
+}

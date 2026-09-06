@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TECHNORA'26 — Admin Access Center</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/participant.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="tech-grid-bg">
+
+  <div class="portal-container">
+    <div class="portal-card glass-panel border-purple-500/30 shadow-purple-950/40">
+
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <div class="badge-tech badge-live mb-3 text-purple-400 border-purple-500/40 bg-purple-500/10">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          FACULTY & CONVENOR GATEWAY
+        </div>
+        <h1 class="font-display text-3xl font-bold tracking-tight text-white mb-1">
+          ADMIN CONTROL
+        </h1>
+        <div class="font-mono text-xs tracking-widest text-purple-400 font-semibold mb-2">
+          TECHNORA'26 • ROUND 1
+        </div>
+        <p class="text-slate-400 text-xs font-mono">
+          Authorized Event Administrators Only
+        </p>
+      </div>
+
+      <!-- Admin Login Form -->
+      <form id="admin-login-form" class="space-y-5">
+        <div>
+          <label class="block font-mono text-xs text-purple-300 mb-1.5 uppercase tracking-wider">
+            Admin ID or Email
+          </label>
+          <input 
+            type="text" 
+            id="input-admin-id" 
+            class="tech-input font-mono border-purple-500/30 focus:border-purple-400" 
+            placeholder="admin@technora.edu or admin" 
+            required
+            autocomplete="username"
+          >
+        </div>
+
+        <div>
+          <label class="block font-mono text-xs text-purple-300 mb-1.5 uppercase tracking-wider">
+            Master Password
+          </label>
+          <input 
+            type="password" 
+            id="input-admin-password" 
+            class="tech-input font-mono border-purple-500/30 focus:border-purple-400" 
+            placeholder="••••••••••••" 
+            required
+            autocomplete="current-password"
+          >
+        </div>
+
+        <button type="submit" id="btn-admin-login" class="btn-cyber-primary w-full py-3 text-sm font-bold bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 shadow-purple-500/30">
+          AUTHENTICATE CONVENOR
+        </button>
+      </form>
+
+      <div class="mt-8 pt-6 border-t border-purple-950 text-center flex flex-col gap-2">
+        <a href="../index.html" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors flex items-center justify-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"></path></svg>
+          Return to Participant Portal
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script type="module">
+    import { loginAdmin, showToast } from "../js/auth.js";
+
+    const form = document.getElementById("admin-login-form");
+    const submitBtn = document.getElementById("btn-admin-login");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const adminId = document.getElementById("input-admin-id").value.trim();
+      const password = document.getElementById("input-admin-password").value;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
+        Authenticating Admin...
+      `;
+
+      try {
+        await loginAdmin(adminId, password);
+      } catch (err) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `AUTHENTICATE CONVENOR`;
+      }
+    });
+  </script>
+</body>
+</html>

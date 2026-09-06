@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TECHNORA'26 — Leaderboard Audit & Evaluation Log</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="tech-grid-bg">
+
+  <div class="admin-layout">
+
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="p-6 border-b border-sky-950">
+        <div class="symposium-logo-badge mb-1">TECHNORA'26</div>
+        <div class="font-display font-bold text-white text-sm">ADMIN CONTROL</div>
+        <div class="font-mono text-[11px] text-sky-400">Round 1: Debug Arena</div>
+      </div>
+
+      <nav class="mt-4 flex-1">
+        <a href="dashboard.html" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Dashboard
+        </a>
+        <a href="participants.html" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          Participants
+        </a>
+        <a href="questions.html" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          Questions Bank
+        </a>
+        <a href="leaderboard.html" class="nav-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          Leaderboard Audit
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-sky-950">
+        <div class="font-mono text-xs text-slate-400 truncate mb-2" id="admin-user-email">admin@technora.edu</div>
+        <button id="admin-logout-btn" class="btn-cyber-outline w-full py-1.5 px-3 text-xs text-red-400 border-red-500/30 hover:border-red-500/60">
+          Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+
+      <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
+        <div>
+          <div class="badge-tech mb-1">SCORE AUDIT & VERIFICATION</div>
+          <h1 class="font-display text-3xl font-bold text-white tracking-tight">
+            Official Symposium Leaderboard
+          </h1>
+          <p class="font-mono text-xs text-slate-400">
+            Real-time candidate rankings, tie-breaker resolution, and proctoring audit trail.
+          </p>
+        </div>
+
+        <div class="flex gap-3">
+          <button id="btn-print-report" class="btn-cyber-outline py-2 px-4 text-xs font-bold flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            Export / Print Ledger
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <div class="stat-card">
+          <div class="font-mono text-xs text-sky-400 uppercase">Total Submissions</div>
+          <div id="stat-total-submissions" class="stat-number text-sky-300">0</div>
+        </div>
+        <div class="stat-card stat-success">
+          <div class="font-mono text-xs text-emerald-400 uppercase">Symposium Top Score</div>
+          <div id="stat-highest-score" class="stat-number text-emerald-300">-- / 20</div>
+        </div>
+        <div class="stat-card stat-warning">
+          <div class="font-mono text-xs text-amber-400 uppercase">Average Arena Score</div>
+          <div id="stat-average-score" class="stat-number text-amber-300">-- / 20</div>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="glass-panel p-4 mb-6 flex flex-wrap gap-4 items-center justify-between">
+        <div class="flex-1 min-w-[260px]">
+          <input 
+            type="text" 
+            id="admin-leaderboard-search" 
+            class="tech-input font-mono text-xs" 
+            placeholder="Search candidate by Name or Participant ID..."
+          >
+        </div>
+        <div class="font-mono text-xs text-slate-400 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          Live Stream Active
+        </div>
+      </div>
+
+      <!-- Leaderboard Audit Table -->
+      <div class="tech-table-container">
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th style="width: 80px;">RANK</th>
+              <th>PARTICIPANT</th>
+              <th style="width: 140px;">SCORE</th>
+              <th style="width: 130px;">TIME TAKEN</th>
+              <th style="width: 110px;">VIOLATIONS</th>
+              <th style="width: 100px;">AUDIT</th>
+            </tr>
+          </thead>
+          <tbody id="admin-leaderboard-tbody">
+            <tr>
+              <td colspan="6" style="text-align:center; padding: 36px; color: var(--text-muted);" class="font-mono text-xs">
+                Retrieving official results stream...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- PARTICIPANT AUDIT MODAL -->
+  <div id="audit-detail-modal" class="modal-backdrop hidden">
+    <div class="portal-card glass-panel max-w-lg w-full">
+      <div class="flex justify-between items-center mb-4 pb-2 border-b border-sky-950">
+        <h3 class="font-display text-lg font-bold text-white">Candidate Examination Audit</h3>
+        <button id="btn-close-audit-modal" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <div id="audit-modal-content" class="space-y-3 font-mono text-xs text-slate-300">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script type="module">
+    import { initLeaderboard } from "../js/leaderboard.js";
+    import { requireAdminAuth, logoutUser } from "../js/auth.js";
+    import { db, doc, getDoc } from "../js/firebase-config.js";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      requireAdminAuth((adminUser) => {
+        const adminEmailEl = document.getElementById("admin-user-email");
+        if (adminEmailEl) adminEmailEl.textContent = adminUser.email || "Admin";
+
+        document.getElementById("admin-logout-btn")?.addEventListener("click", () => {
+          logoutUser("../admin/index.html");
+        });
+
+        initLeaderboard("admin-leaderboard-tbody", "admin-leaderboard-search", true);
+
+        // Print report
+        document.getElementById("btn-print-report")?.addEventListener("click", () => {
+          window.print();
+        });
+
+        // Audit modal handler
+        window.viewParticipantDetail = async (uid) => {
+          const modal = document.getElementById("audit-detail-modal");
+          const content = document.getElementById("audit-modal-content");
+          if (!modal || !content) return;
+
+          content.innerHTML = "<div class='text-center py-4 text-slate-400'>Loading audit trail...</div>";
+          modal.classList.remove("hidden");
+
+          try {
+            const resSnap = await getDoc(doc(db, "results", uid));
+            const attSnap = await getDoc(doc(db, "attempts", uid));
+
+            if (!resSnap.exists()) {
+              content.innerHTML = "<div class='text-red-400'>No submission record found for this user.</div>";
+              return;
+            }
+
+            const res = resSnap.data();
+            const att = attSnap.exists() ? attSnap.data() : {};
+
+            content.innerHTML = `
+              <div class="glass-panel p-3 border-sky-900/40 bg-slate-950/60 space-y-1.5">
+                <div>Candidate: <strong class="text-white">${res.name}</strong> (${res.participantId})</div>
+                <div>Score: <strong class="text-sky-300">${res.score} / ${res.totalQuestions || 20}</strong></div>
+                <div>Breakdown: <span class="text-emerald-400">${res.correct} Correct</span>, <span class="text-red-400">${res.wrong} Wrong</span>, <span class="text-slate-400">${res.unanswered} Unanswered</span></div>
+                <div>Time Taken: <span class="text-sky-300 font-bold">${res.timeTaken}</span></div>
+                <div>Proctor Violations: <strong class="${res.violationCount > 0 ? 'text-red-400' : 'text-emerald-400'}">${res.violationCount || 0}</strong></div>
+                <div>Auto-submitted by timer: <span class="text-slate-300">${res.isAutoSubmitted ? 'Yes' : 'No (Manual)'}</span></div>
+                <div>Last violation notice: <span class="text-slate-400">${att.lastViolationReason || 'None'}</span></div>
+              </div>
+            `;
+          } catch (e) {
+            content.innerHTML = `<div class="text-red-400">Audit loading error: ${e.message}</div>`;
+          }
+        };
+
+        document.getElementById("btn-close-audit-modal")?.addEventListener("click", () => {
+          document.getElementById("audit-detail-modal")?.classList.add("hidden");
+        });
+      });
+    });
+  </script>
+</body>
+</html>
